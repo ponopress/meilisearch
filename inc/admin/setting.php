@@ -3,7 +3,7 @@
  * Add the plugin settings page.
  *
  * @package meilisearch
- * @since   1.0.0
+ * @since   0.0.1
  */
 
 namespace Meilisearch\Admin;
@@ -13,16 +13,16 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Register the plugin settings page.
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 function add_settings_page() {
-	add_submenu_page(
-		'options-general.php',
+	add_menu_page(
 		__( 'Meilisearch', 'meilisearch' ),
 		__( 'Meilisearch', 'meilisearch' ),
 		'manage_options',
 		'meilisearch-settings',
-		__NAMESPACE__ . '\print_settings_page'
+		__NAMESPACE__ . '\print_settings_page',
+        'dashicons-search'
 	);
 }
 add_action( 'admin_menu', __NAMESPACE__ . '\add_settings_page' );
@@ -30,7 +30,7 @@ add_action( 'admin_menu', __NAMESPACE__ . '\add_settings_page' );
 /**
  * Print the settings page wrapper div. Content is generated via JSX.
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 function print_settings_page() {
 	?>
@@ -52,7 +52,7 @@ function enqueue_settings_assets( $admin_page ) {
     $asset = include $asset_file;
 
     wp_enqueue_script(
-        'unadorned-announcement-bar-script',
+        'meilisearch',
         MS_PLUGIN_URL. 'build/settings/index.js',
         $asset['dependencies'],
         $asset['version'],

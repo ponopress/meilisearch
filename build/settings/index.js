@@ -13,16 +13,6 @@
  * File serves as an entry point for webpack.
  */
 
-/***/ }),
-
-/***/ "./src/settings/test.js":
-/*!******************************!*\
-  !*** ./src/settings/test.js ***!
-  \******************************/
-/***/ (() => {
-
-console.log('here');
-
 /***/ })
 
 /******/ 	});
@@ -103,9 +93,6 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./settings */ "./src/settings/settings.js");
 /* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_settings__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test */ "./src/settings/test.js");
-/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_test__WEBPACK_IMPORTED_MODULE_1__);
-
 
 })();
 
