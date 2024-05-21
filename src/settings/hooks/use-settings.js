@@ -4,6 +4,7 @@ import { store as noticesStore } from '@wordpress/notices';
 import { useEffect, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 
+
 const useSettings = () => {
     const [ message, setMessage ] = useState('Hello, World!');
     const [ display, setDisplay ] = useState(true);
@@ -37,6 +38,8 @@ const useSettings = () => {
                 __( 'Settings saved.', 'meilisearch' )
             );
         } );
+
+       
     };
 
     return {

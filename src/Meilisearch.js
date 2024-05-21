@@ -19,10 +19,10 @@ const App = () => {
         hostURL,
         APIKey
     );
-
+    
     return (
         <InstantSearch
-            indexName="movies"
+            indexName="posts"
             searchClient={searchClient}
         >
             <SearchBox />
