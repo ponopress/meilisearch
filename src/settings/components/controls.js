@@ -5,29 +5,6 @@ import {
     TextControl,
 } from '@wordpress/components';
 
-
-const MessageControl = ( { value, onChange } ) => {
-    return (
-        <TextareaControl
-            label={ __( 'Message', 'meilisearch' ) }
-            value={ value }
-            onChange={ onChange }
-            __nextHasNoMarginBottom
-        />
-    );
-};
-
-const DisplayControl = ( { value, onChange } ) => {
-    return (
-        <ToggleControl
-            label={ __( 'Display', 'meilisearch' ) }
-            checked={ value }
-            onChange={ onChange }
-            __nextHasNoMarginBottom
-        />
-    );
-};
-
 const HostURLControl = ({ value, onChange }) => {
     return (
        <TextControl
@@ -43,9 +20,9 @@ const APIKeyControl = ({ value, onChange }) => {
        <TextControl
             value={ value }
             onChange={ onChange }
-            type="password"
+            type="text"
        />
     );
 };
 
-export { MessageControl, DisplayControl, HostURLControl, APIKeyControl };
+export { HostURLControl, APIKeyControl };

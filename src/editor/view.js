@@ -21,10 +21,8 @@
  */
 import { render, Suspense } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
-console.log('here')
 import App from '../Meilisearch'
 window.addEventListener( 'DOMContentLoaded', () => {
-	console.log('here')
 	const element = document.querySelector(
 		'.wp-block-create-block-meilisearch'
 	);

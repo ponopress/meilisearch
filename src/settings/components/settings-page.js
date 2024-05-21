@@ -9,7 +9,7 @@ import {
 } from '@wordpress/components';
 import { useSettings } from '../hooks';
 import { Notices } from './notices';
-import { MessageControl, DisplayControl, HostURLControl, APIKeyControl } from './controls';
+import { HostURLControl, APIKeyControl } from './controls';
 
 const SaveButton = ( { onClick } ) => {
     return (
@@ -30,10 +30,6 @@ const SettingsTitle = () => {
 
 const SettingsPage = () => {
     const {
-        message,
-        setMessage,
-        display,
-        setDisplay,
         hostURL,
         setHostURL,
         APIKey,
@@ -46,20 +42,6 @@ const SettingsPage = () => {
             <SettingsTitle />
             <Notices />
             <Panel>
-                <PanelBody>
-                    <PanelRow>
-                        <MessageControl
-                            value={ message }
-                            onChange={ ( value ) => setMessage( value ) }
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <DisplayControl
-                            value={ display }
-                            onChange={ ( value ) => setDisplay( value ) }
-                        />
-                    </PanelRow>
-                </PanelBody>
                 <PanelBody
                     title={ __( 'Appearance', 'meilisearch' ) }
                     initialOpen={ false }
