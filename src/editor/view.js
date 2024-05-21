@@ -1,0 +1,45 @@
+/**
+ * Use this file for JavaScript code that you want to run in the front-end
+ * on posts/pages that contain this block.
+ *
+ * When this file is defined as the value of the `viewScript` property
+ * in `block.json` it will be enqueued on the front end of the site.
+ *
+ * Example:
+ *
+ * ```js
+ * {
+ *   "viewScript": "file:./view.js"
+ * }
+ * ```
+ *
+ * If you're not making any changes to this file because your project doesn't need any
+ * JavaScript running in the front-end, then you should delete this file and remove
+ * the `viewScript` property from `block.json`.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
+ */
+import { render, Suspense } from '@wordpress/element';
+import { Spinner } from '@wordpress/components';
+console.log('here')
+import App from '../Meilisearch'
+window.addEventListener( 'DOMContentLoaded', () => {
+	console.log('here')
+	const element = document.querySelector(
+		'.wp-block-create-block-meilisearch'
+	);
+	if ( element ) {
+		const attributes = { ...element.dataset };
+		render(
+			<Suspense fallback={ <Spinner/> }>
+				<App />
+			</Suspense>,
+			element
+		);
+	}
+} );
+
+	
+/* eslint-disable no-console */
+console.log( 'Hello World! (from create-block-meilisearch block)' );
+/* eslint-enable no-console */

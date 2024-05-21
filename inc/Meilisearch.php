@@ -79,7 +79,8 @@ final class Meilisearch {
 	 * @since 1.0.0
 	 */
 	public function includes() {
-
+		include_once MS_ABSPATH . 'inc/block.php';
+		include_once MS_ABSPATH . 'inc/admin/setting.php';
 	}
 
 	/**
