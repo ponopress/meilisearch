@@ -39,7 +39,7 @@ function print_settings_page() {
 }
 
 function enqueue_settings_assets( $admin_page ) {
-    if ( 'settings_page_meilisearch-settings' !== $admin_page ) {
+    if ( 'toplevel_page_meilisearch-settings' !== $admin_page ) {
         return;
     }
 
@@ -60,6 +60,57 @@ function enqueue_settings_assets( $admin_page ) {
             'in_footer' => true,
         )
     );
+    wp_enqueue_style(
+        'meilisearch',
+        MS_PLUGIN_URL. 'build/settings/index.css',
+        array_filter(
+            $asset['dependencies'],
+            function ( $style ) {
+                return wp_style_is( $style, 'registered' );
+            }
+        ),
+        $asset['version'],
+    );
 }
 
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
+
+function register_settings() {
+    $default = array(
+        'message' => __( 'Hello, World!', 'meilisearch' ),
+        'display' => true,
+        'hostURL' => '',
+        'APIKey' => '',
+    );
+    $schema  = array(
+        'type'       => 'object',
+        'properties' => array(
+            'message' => array(
+                'type' => 'string',
+            ),
+            'display' => array(
+                'type' => 'boolean',
+            ),
+            'hostURL' => array(
+                'type' => 'string',
+            ),
+            'APIKey' => array(
+                'type' => 'string',
+            ),
+        ),
+    );
+
+    register_setting(
+        'options',
+        'meilisearch_settings',
+        array(
+            'type'         => 'object',
+            'default'      => $default,
+            'show_in_rest' => array(
+                'schema' => $schema,
+            ),
+        )
+    );
+}
+
+add_action( 'init', __NAMESPACE__ .'\register_settings' );

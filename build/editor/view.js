@@ -13347,31 +13347,131 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_instantsearch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-instantsearch */ "./node_modules/react-instantsearch-core/dist/es/components/InstantSearch.js");
-/* harmony import */ var react_instantsearch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-instantsearch */ "./node_modules/react-instantsearch/dist/es/widgets/SearchBox.js");
-/* harmony import */ var react_instantsearch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-instantsearch */ "./node_modules/react-instantsearch/dist/es/widgets/Hits.js");
-/* harmony import */ var react_instantsearch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-instantsearch */ "./node_modules/react-instantsearch/dist/es/widgets/Highlight.js");
-/* harmony import */ var _meilisearch_instant_meilisearch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @meilisearch/instant-meilisearch */ "./node_modules/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.js");
-/* harmony import */ var _meilisearch_instant_meilisearch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_meilisearch_instant_meilisearch__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_instantsearch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-instantsearch */ "./node_modules/react-instantsearch-core/dist/es/components/InstantSearch.js");
+/* harmony import */ var react_instantsearch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-instantsearch */ "./node_modules/react-instantsearch/dist/es/widgets/SearchBox.js");
+/* harmony import */ var react_instantsearch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-instantsearch */ "./node_modules/react-instantsearch/dist/es/widgets/Hits.js");
+/* harmony import */ var react_instantsearch__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-instantsearch */ "./node_modules/react-instantsearch/dist/es/widgets/Highlight.js");
+/* harmony import */ var _meilisearch_instant_meilisearch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @meilisearch/instant-meilisearch */ "./node_modules/@meilisearch/instant-meilisearch/dist/instant-meilisearch.umd.js");
+/* harmony import */ var _meilisearch_instant_meilisearch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_meilisearch_instant_meilisearch__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _settings_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./settings/hooks */ "./src/settings/hooks/index.js");
 
 
 
-const {
-  searchClient
-} = (0,_meilisearch_instant_meilisearch__WEBPACK_IMPORTED_MODULE_1__.instantMeiliSearch)('http://172.16.238.10:7700/', 'aSampleMasterKey');
-const App = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_instantsearch__WEBPACK_IMPORTED_MODULE_2__.InstantSearch, {
-  indexName: "movies",
-  searchClient: searchClient
-}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_instantsearch__WEBPACK_IMPORTED_MODULE_3__.SearchBox, null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_instantsearch__WEBPACK_IMPORTED_MODULE_4__.Hits, {
-  hitComponent: Hit
-}));
+
+const App = () => {
+  const {
+    hostURL,
+    APIKey
+  } = (0,_settings_hooks__WEBPACK_IMPORTED_MODULE_1__.useSettings)();
+  const {
+    searchClient
+  } = (0,_meilisearch_instant_meilisearch__WEBPACK_IMPORTED_MODULE_2__.instantMeiliSearch)('http://172.16.238.10:7700/', 'aSampleMasterKey');
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_instantsearch__WEBPACK_IMPORTED_MODULE_3__.InstantSearch, {
+    indexName: "movies",
+    searchClient: searchClient
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_instantsearch__WEBPACK_IMPORTED_MODULE_4__.SearchBox, null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_instantsearch__WEBPACK_IMPORTED_MODULE_5__.Hits, {
+    hitComponent: Hit
+  }));
+};
 const Hit = ({
   hit
-}) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_instantsearch__WEBPACK_IMPORTED_MODULE_5__.Highlight, {
+}) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_instantsearch__WEBPACK_IMPORTED_MODULE_6__.Highlight, {
   attribute: "title",
   hit: hit
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+
+/***/ }),
+
+/***/ "./src/settings/hooks/index.js":
+/*!*************************************!*\
+  !*** ./src/settings/hooks/index.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useSettings: () => (/* reexport safe */ _use_settings__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _use_settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./use-settings */ "./src/settings/hooks/use-settings.js");
+
+
+/***/ }),
+
+/***/ "./src/settings/hooks/use-settings.js":
+/*!********************************************!*\
+  !*** ./src/settings/hooks/use-settings.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_notices__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/notices */ "@wordpress/notices");
+/* harmony import */ var _wordpress_notices__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_notices__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+
+
+const useSettings = () => {
+  const [message, setMessage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)('Hello, World!');
+  const [display, setDisplay] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(true);
+  const [hostURL, setHostURL] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)('');
+  const [APIKey, setAPIKey] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)('');
+  const {
+    createSuccessNotice
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useDispatch)(_wordpress_notices__WEBPACK_IMPORTED_MODULE_2__.store);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
+    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default()({
+      path: '/wp/v2/settings'
+    }).then(settings => {
+      setMessage(settings.meilisearch_settings.message);
+      setDisplay(settings.meilisearch_settings.display);
+      setHostURL(settings.meilisearch_settings.hostURL);
+      setAPIKey(settings.meilisearch_settings.APIKey);
+    });
+  }, []);
+  const saveSettings = () => {
+    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default()({
+      path: '/wp/v2/settings',
+      method: 'POST',
+      data: {
+        meilisearch_settings: {
+          message,
+          display,
+          hostURL,
+          APIKey
+        }
+      }
+    }).then(() => {
+      createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Settings saved.', 'meilisearch'));
+    });
+  };
+  return {
+    message,
+    setMessage,
+    display,
+    setDisplay,
+    hostURL,
+    setHostURL,
+    APIKey,
+    setAPIKey,
+    saveSettings
+  };
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useSettings);
 
 /***/ }),
 
@@ -15079,6 +15179,17 @@ module.exports = window["React"];
 
 /***/ }),
 
+/***/ "@wordpress/api-fetch":
+/*!**********************************!*\
+  !*** external ["wp","apiFetch"] ***!
+  \**********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["apiFetch"];
+
+/***/ }),
+
 /***/ "@wordpress/components":
 /*!************************************!*\
   !*** external ["wp","components"] ***!
@@ -15090,6 +15201,17 @@ module.exports = window["wp"]["components"];
 
 /***/ }),
 
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["data"];
+
+/***/ }),
+
 /***/ "@wordpress/element":
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
@@ -15098,6 +15220,28 @@ module.exports = window["wp"]["components"];
 
 "use strict";
 module.exports = window["wp"]["element"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["i18n"];
+
+/***/ }),
+
+/***/ "@wordpress/notices":
+/*!*********************************!*\
+  !*** external ["wp","notices"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["notices"];
 
 /***/ }),
 
