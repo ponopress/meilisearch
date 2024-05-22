@@ -22,6 +22,8 @@
 import { render, Suspense } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
 import App from '../Meilisearch'
+import AppAutoComplete from '../Autocomplete'
+
 window.addEventListener( 'DOMContentLoaded', () => {
 	const element = document.querySelector(
 		'.wp-block-create-block-meilisearch'
@@ -31,6 +33,7 @@ window.addEventListener( 'DOMContentLoaded', () => {
 		render(
 			<Suspense fallback={ <Spinner/> }>
 				<App />
+				<AppAutoComplete />
 			</Suspense>,
 			element
 		);

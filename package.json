@@ -19,6 +19,9 @@
 		"webpack-remove-empty-scripts": "^0.7.3"
 	},
 	"dependencies": {
+		"@algolia/autocomplete-js": "^1.17.1",
+		"@algolia/autocomplete-theme-classic": "^1.17.1",
+		"@meilisearch/autocomplete-client": "^0.3.0",
 		"@meilisearch/instant-meilisearch": "^0.18.1",
 		"meilisearch": "^0.40.0",
 		"react-instantsearch": "^7.8.1"
