@@ -1,0 +1,29 @@
+#meilisearch-settings {
+    h1 {
+        font-size: 32px;
+        line-height: 40px;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    .settings-tab-panel {
+        display: flex;
+        gap: 5%;
+
+        .components-tab-panel {
+            &__tabs {
+                flex-basis: 15%;
+            }
+
+            &__tab-content {
+                flex-basis: 80%;
+            }
+
+            &__tabs-item {
+                &.is-active {
+                    background-color: #e6e6e6;
+                }
+            }
+        }
+    }
+}

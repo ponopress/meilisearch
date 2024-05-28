@@ -21,8 +21,6 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import './editor.scss';
 
-import { MeiliSearch } from 'meilisearch'
-import movies from './movies.json'
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -32,16 +30,10 @@ import movies from './movies.json'
  * @return {Element} Element to render.
  */
 export default function Edit() {
-	// const client = new MeiliSearch({
-	// 	host: 'http://172.16.238.10:7700/',
-	// 	apiKey: 'aSampleMasterKey'
-	//   })
-	//   client.index('movies').addDocuments(movies)
-	// 	.then((res) => console.log(res))
 	return (
-		<div { ...useBlockProps() }>
+		<div {...useBlockProps()}>
 			<App />
-			{ __( 'Meilisearch – hello from the editor!', 'meilisearch' ) }
+			{__('Meilisearch – hello from the editor!', 'meilisearch')}
 		</div>
 	);
 }

@@ -77,10 +77,9 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' 
 
 function register_settings() {
     $default = array(
-        'message' => __( 'Hello, World!', 'meilisearch' ),
-        'display' => true,
         'hostURL' => '',
         'APIKey' => '',
+        'defaultPostTypesUIDs' => array('post', 'page')
     );
     $schema  = array(
         'type'       => 'object',
@@ -96,6 +95,9 @@ function register_settings() {
             ),
             'APIKey' => array(
                 'type' => 'string',
+            ),
+            'defaultPostTypesUIDs' => array(
+                'type' => 'array',
             ),
         ),
     );

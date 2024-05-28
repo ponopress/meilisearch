@@ -1,67 +1,35 @@
 import { __ } from '@wordpress/i18n';
-import {
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalHeading as Heading,
-	Button,
-	Panel,
-	PanelBody,
-	PanelRow,
-} from '@wordpress/components';
+
 import { useSettings } from '../hooks';
 import { Notices } from './notices';
-import { HostURLControl, APIKeyControl } from './controls';
 
-const SaveButton = ( { onClick } ) => {
-    return (
-        <Button variant="primary" onClick={ onClick } __next40pxDefaultSize>
-            { __( 'Save', 'meilisearch' ) }
-        </Button>
-    );
-};
+import movies from './../movies.json'
+import {
+    // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+    Spinner,
+} from '@wordpress/components';
 
-const SettingsTitle = () => {
-    return (
-        <Heading level={ 1 }>
-            { __( 'Meiliesearch', 'meilisearch' ) }
-        </Heading>
-    );
-};
-
+import { SettingsTitle, SettingsTabPanel } from './components'
 
 const SettingsPage = () => {
     const {
         hostURL,
-        setHostURL,
         APIKey,
-        setAPIKey,
-        saveSettings
     } = useSettings();
+
+    // To ensure that hostURL and APIKey from useSettings are fetched and available 
+    // before initializing instantMeiliSearch and rendering the InstantSearch component,
+    if (!hostURL || !APIKey) {
+        // return <Spinner />
+    }
 
     return (
         <>
             <SettingsTitle />
             <Notices />
-            <Panel>
-                <PanelBody
-                    title={ __( 'Appearance', 'meilisearch' ) }
-                    initialOpen={ false }
-                >
-                    <PanelRow>
-                        <HostURLControl
-                            value={ hostURL }
-                            onChange={ ( value ) => setHostURL( value ) }
-                        />
-                        <APIKeyControl
-                            value={ APIKey }
-                            onChange={ ( value ) => setAPIKey( value ) }
-                        />
-                        
-                    </PanelRow>
-                </PanelBody>
-            </Panel>
-            <SaveButton onClick={ saveSettings } />
+            <SettingsTabPanel />
         </>
-   );
+    );
 };
 
 export { SettingsPage };
