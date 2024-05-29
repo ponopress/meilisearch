@@ -8,60 +8,72 @@ import { MeiliSearch } from 'meilisearch'
 
 
 const useSettings = () => {
-    const [ message, setMessage ] = useState('Hello, World!');
-    const [ display, setDisplay ] = useState(true);
-    const [ hostURL, setHostURL ] = useState('');
-    const [ APIKey, setAPIKey ] = useState('');
-    const [ meiliesearchClient, setMeiliesearchClient ] = useState('');
+    const [message, setMessage] = useState('Hello, World!');
+    const [display, setDisplay] = useState(true);
+    const [hostURL, setHostURL] = useState('');
+    const [APIKey, setAPIKey] = useState('');
+    const [meiliesearchClient, setMeiliesearchClient] = useState('');
     const [healthStatus, setHealthStatus] = useState(null);
     const [selectedTab, setSelectedTab] = useState('');
-    const [UIDs, setUIDs] = useState( ['post','page']);
+    const [UIDs, setUIDs] = useState(['post', 'page']);
 
-    const { createSuccessNotice } = useDispatch( noticesStore );
-    useEffect( () => {
-        apiFetch( { path: '/wp/v2/settings' } ).then( ( settings ) => {
-            if( settings.meilisearch_settings ) {
-                setMessage( settings.meilisearch_settings.message );
-                setDisplay( settings.meilisearch_settings.display );
-                setHostURL( settings.meilisearch_settings.hostURL );
-                setAPIKey( settings.meilisearch_settings.APIKey );
-                setUIDs( settings.meilisearch_settings.defaultPostTypesUIDs );
-                const client = new MeiliSearch({
-                    host: settings.meilisearch_settings.hostURL,
-                    apiKey: settings.meilisearch_settings.APIKey
-                });
-                setMeiliesearchClient(client);
-
+    const { createSuccessNotice } = useDispatch(noticesStore);
+    useEffect(() => {
+        apiFetch({ path: '/wp/v2/settings' }).then((settings) => {
+            if (settings.meilisearch_settings) {
+                setMessage(settings.meilisearch_settings.message);
+                setDisplay(settings.meilisearch_settings.display);
+                setHostURL(settings.meilisearch_settings.hostURL);
+                setAPIKey(settings.meilisearch_settings.APIKey);
+                setUIDs(settings.meilisearch_settings.defaultPostTypesUIDs);
             }
-        } );
-    }, [] );
+        });
+    }, []);
+
 
     useEffect(() => {
-        if (meiliesearchClient) {
-            meiliesearchClient.health()
+        // Ensure that hostURL and APIKey from useSettings are fetched and available 
+        // before initializing instantMeiliSearch and rendering the InstantSearch component
+        if (!hostURL || !APIKey) {
+            return; // Exit early if hostURL or APIKey is not available
+        }
+        const client = new MeiliSearch({
+            host: hostURL,
+            apiKey: APIKey
+        });
+        
+        setMeiliesearchClient(client);
+
+        if (client) {
+            client.health()
                 .then((status) => {
+                    console.log(status, 'first')
+
                     setHealthStatus(status);
                 })
                 .catch((error) => {
                     console.error('Error fetching MeiliSearch health status:', error);
                 });
         }
+
     }, [hostURL, APIKey]);
 
-    useEffect(() => {
-        if (meiliesearchClient) {
-            meiliesearchClient.health()
-                .then((status) => {
-                    setHealthStatus(status);
-                })
-                .catch((error) => {
-                    console.error('Error fetching MeiliSearch health status:', error);
-                });
-        }
-    }, [meiliesearchClient]);
+    // useEffect(() => {
+    //     if (meiliesearchClient) {
+    //         meiliesearchClient.health()
+    //             .then((status) => {
+    //                 console.log(status, 'here')
+
+    //                 setHealthStatus(status);
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error fetching MeiliSearch health status:', error);
+    //             });
+    //     }
+    // }, [meiliesearchClient]);
 
     const saveSettings = () => {
-        apiFetch( {
+        apiFetch({
             path: '/wp/v2/settings',
             method: 'POST',
             data: {
@@ -70,16 +82,16 @@ const useSettings = () => {
                     display,
                     hostURL,
                     APIKey,
-                    defaultPostTypesUIDs : UIDs
+                    defaultPostTypesUIDs: UIDs
                 },
             },
-        } ).then( () => {
+        }).then(() => {
             createSuccessNotice(
-                __( 'Settings saved.', 'meilisearch' )
+                __('Settings saved.', 'meilisearch')
             );
-        } );
+        });
 
-       
+
     };
 
     return {

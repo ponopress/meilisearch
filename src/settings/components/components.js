@@ -226,11 +226,11 @@ const SettingsTabPanel = () => {
             tabs={[
                 {
                     name: 'api-keys',
-                    title: 'API Keys',
+                    title: __( 'API Keys', 'meiliesearch'),
                 },
                 {
                     name: 'indexes',
-                    title: 'Indexes',
+                    title: __( 'Indexes', 'meiliesearch' ),
                 },
             ]}
         >

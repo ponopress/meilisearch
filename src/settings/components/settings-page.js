@@ -12,16 +12,7 @@ import {
 import { SettingsTitle, SettingsTabPanel } from './components'
 
 const SettingsPage = () => {
-    const {
-        hostURL,
-        APIKey,
-    } = useSettings();
-
-    // To ensure that hostURL and APIKey from useSettings are fetched and available 
-    // before initializing instantMeiliSearch and rendering the InstantSearch component,
-    if (!hostURL || !APIKey) {
-        // return <Spinner />
-    }
+ 
 
     return (
         <>
