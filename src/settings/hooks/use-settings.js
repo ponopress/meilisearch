@@ -5,20 +5,22 @@ import { useEffect, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { MeiliSearch } from 'meilisearch'
 
-
-
 const useSettings = () => {
     const [message, setMessage] = useState('Hello, World!');
     const [display, setDisplay] = useState(true);
     const [hostURL, setHostURL] = useState('');
     const [APIKey, setAPIKey] = useState('');
     const [meiliesearchClient, setMeiliesearchClient] = useState('');
-    const [healthStatus, setHealthStatus] = useState(null);
+    const [connectionInfo, setConnectionInfo] = useState({
+        status: false,
+        error: null,
+    });
     const [selectedTab, setSelectedTab] = useState('');
     const [UIDs, setUIDs] = useState(['post', 'page']);
 
-    const { createSuccessNotice } = useDispatch(noticesStore);
+    const { createSuccessNotice, createErrorNotice } = useDispatch(noticesStore);
     useEffect(() => {
+        console.log('api fetching')
         apiFetch({ path: '/wp/v2/settings' }).then((settings) => {
             if (settings.meilisearch_settings) {
                 setMessage(settings.meilisearch_settings.message);
@@ -27,52 +29,67 @@ const useSettings = () => {
                 setAPIKey(settings.meilisearch_settings.APIKey);
                 setUIDs(settings.meilisearch_settings.defaultPostTypesUIDs);
             }
-        });
-    }, []);
 
+            createMeiliesearchClient(settings.meilisearch_settings.hostURL, settings.meilisearch_settings.APIKey)
+        })
+    }, [])
 
-    useEffect(() => {
-        // Ensure that hostURL and APIKey from useSettings are fetched and available 
-        // before initializing instantMeiliSearch and rendering the InstantSearch component
-        if (!hostURL || !APIKey) {
-            return; // Exit early if hostURL or APIKey is not available
-        }
-        const client = new MeiliSearch({
-            host: hostURL,
-            apiKey: APIKey
-        });
-        
-        setMeiliesearchClient(client);
+    const createMeiliesearchClient = (host, apiKey, onFailNotice, onSuccessNotice) => {
+        let client
+        try {
+            client = new MeiliSearch({
+                host: host,
+                apiKey: apiKey
+            });
+        } catch (error) {
+            console.log('fail')
+            setConnectionInfo({
+                status: false,
+                error: error.message,
+            });
+        };
 
+        setMeiliesearchClient(client)
+        checkConnectionStatus(client, onFailNotice, onSuccessNotice)
+    }
+
+    const onSuccessNotice = () => {
+        createSuccessNotice(
+            __('Connected successfully!!!.', 'meilisearch')
+        );
+    }
+
+    const onFailNotice = (errorMessage) => {
+        createErrorNotice( errorMessage );
+    }
+
+    const checkConnectionStatus = (client, onFailNotice, onSuccessNotice) => {
+        console.log('connection checking')
+        console.log(onFailNotice, onSuccessNotice)
         if (client) {
-            client.health()
-                .then((status) => {
-                    console.log(status, 'first')
-
-                    setHealthStatus(status);
+            client.getVersion()
+                .then(() => {
+                    console.log('pass')
+                    setConnectionInfo({
+                        status: true,
+                        error: null,
+                    });
+                    onSuccessNotice && onSuccessNotice()
                 })
                 .catch((error) => {
-                    console.error('Error fetching MeiliSearch health status:', error);
+                    console.log('fail')
+                    setConnectionInfo({
+                        status: false,
+                        error: error.message,
+                    });
+                    onFailNotice && onFailNotice( error.message)
                 });
         }
-
-    }, [hostURL, APIKey]);
-
-    // useEffect(() => {
-    //     if (meiliesearchClient) {
-    //         meiliesearchClient.health()
-    //             .then((status) => {
-    //                 console.log(status, 'here')
-
-    //                 setHealthStatus(status);
-    //             })
-    //             .catch((error) => {
-    //                 console.error('Error fetching MeiliSearch health status:', error);
-    //             });
-    //     }
-    // }, [meiliesearchClient]);
+    }
 
     const saveSettings = () => {
+        console.log('save button click')
+
         apiFetch({
             path: '/wp/v2/settings',
             method: 'POST',
@@ -86,11 +103,8 @@ const useSettings = () => {
                 },
             },
         }).then(() => {
-            createSuccessNotice(
-                __('Settings saved.', 'meilisearch')
-            );
-        });
-
+            createMeiliesearchClient(hostURL, APIKey, onFailNotice, onSuccessNotice)
+        })
 
     };
 
@@ -104,7 +118,7 @@ const useSettings = () => {
         APIKey,
         setAPIKey,
         meiliesearchClient,
-        healthStatus,
+        connectionInfo,
         selectedTab,
         setSelectedTab,
         saveSettings,

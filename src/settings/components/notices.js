@@ -11,7 +11,6 @@ const Notices = () => {
     if ( notices.length === 0 ) {
         return null;
     }
-
     return <NoticeList notices={ notices } onRemove={ removeNotice } />;
 };
 

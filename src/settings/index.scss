@@ -6,24 +6,42 @@
         font-weight: bold;
     }
 
-    .settings-tab-panel {
-        display: flex;
-        gap: 5%;
+    .meilisearch__ {
+        &settings-tab-panel {
+            display: flex;
+            gap: 5%;
 
-        .components-tab-panel {
-            &__tabs {
-                flex-basis: 15%;
+            .components-tab-panel {
+                &__tabs {
+                    flex-basis: 15%;
+                }
+
+                &__tab-content {
+                    flex-basis: 80%;
+                }
+
+                &__tabs-item {
+                    &.is-active {
+                        background-color: #e6e6e6;
+                    }
+                }
             }
+        }
 
-            &__tab-content {
-                flex-basis: 80%;
-            }
+        &connection-info {
+            &__status {
+                padding: 5px 10px;
+                border-radius: 15px;
 
-            &__tabs-item {
-                &.is-active {
-                    background-color: #e6e6e6;
+                &.success {
+                    background-color: #cff8dd;
+                }
+                &.error {
+                    background-color: rgb(255, 125, 125);
+                    color: #fff;
                 }
             }
         }
     }
+
 }

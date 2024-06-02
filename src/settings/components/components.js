@@ -17,7 +17,7 @@ import {
     Dashicon,
     Spinner
 } from '@wordpress/components';
-import { post, page } from '@wordpress/icons';
+import { post, page, seen, color } from '@wordpress/icons';
 import { useSettings } from '../hooks';
 
 const HostURLControl = ({ value, onChange }) => {
@@ -58,7 +58,7 @@ const IndexUIDControl = ({ value, onChange, placeholder }) => {
 const SaveButton = ({ onClick }) => {
     return (
         <Button variant="primary" onClick={onClick} __next40pxDefaultSize>
-            {__('SAVE SETTINGS', 'meilisearch')}
+            {__('CONNECT', 'meilisearch')}
         </Button>
     );
 };
@@ -87,18 +87,39 @@ const SettingsTitle = () => {
     );
 };
 
-const APIKeyCard = () => {
+const ConnectionInfo = ({ connectionInfo }) => {
+    return (
+        <div className='meilisearch__connection-info'>
+            <span>Connection Status: </span>
+            {connectionInfo.status ? (
+                <span className='meilisearch__connection-info__status success'>
+                    <span>Connected </span>
+                </span>
+            ) : (
+                <span>
+                    <span className='meilisearch__connection-info__status error'>
+                        <span>Disconnected </span>
+                    </span>
+                </span>
+            )}
+        </div>
+    );
+};
+
+const APIKeyCard = (settingsProps) => {
     const {
         hostURL,
         setHostURL,
         APIKey,
         setAPIKey,
         saveSettings,
-    } = useSettings();
+        connectionInfo,
+    } = settingsProps
     return (
         <Card>
             <CardHeader>
                 <Heading level={3}>{__('API Key', 'meiliesearch')}</Heading>
+                <ConnectionInfo connectionInfo={connectionInfo} />
             </CardHeader>
             <CardBody>
                 <Flex align="start" justify="normal" gap="12">
@@ -114,6 +135,7 @@ const APIKeyCard = () => {
                             value={APIKey}
                             onChange={(value) => setAPIKey(value)}
                         />
+
                     </FlexBlock>
                 </Flex>
             </CardBody>
@@ -124,14 +146,14 @@ const APIKeyCard = () => {
     )
 }
 
-const IndexesCard = () => {
+const IndexesCard = (settingsProps) => {
     const {
-        healthStatus,
+        connectionInfo,
         meiliesearchClient,
         UIDs,
         setUIDs
-    } = useSettings();
-    
+    } = settingsProps
+
     if (!UIDs) {
         return <Spinner />
     }
@@ -158,7 +180,7 @@ const IndexesCard = () => {
             <CardHeader>
                 <Heading level={3}>{__('Indexes', 'meiliesearch')}</Heading>
             </CardHeader>
-            {healthStatus ? (
+            {connectionInfo.status ? (
                 <>
                     <CardBody>
                         <Flex align="start" justify="normal" gap="12">
@@ -197,12 +219,13 @@ const IndexesCard = () => {
                             </FlexBlock>
                         </Flex>
                     </CardBody>
-                    <CardFooter>
-                    </CardFooter>
                 </>
             ) : (
                 <CardBody>
-                    <div>Loading MeiliSearch status...</div>
+                    <div>
+                        
+                        <p><Dashicon style={{color: "red"}} icon="dismiss" /> Error loading indexes: {connectionInfo.error}</p>
+                    </div>
                 </CardBody>
             )}
 
@@ -210,33 +233,35 @@ const IndexesCard = () => {
     )
 }
 
-const TabPanelItems = ({ tab }) => {
+const TabPanelItems = ({ tab, ...settingsProps }) => {
     if (tab.name === 'api-keys') {
-        return <APIKeyCard />
+        return <APIKeyCard {...settingsProps} />
     } else {
-        return <IndexesCard />
+        return <IndexesCard {...settingsProps} />
     }
 };
 
 const SettingsTabPanel = () => {
+    const settingsProps = useSettings();
+
     return (
         <TabPanel
-            className="settings-tab-panel"
+            className="meilisearch__settings-tab-panel"
             orientation="vertical"
             tabs={[
                 {
                     name: 'api-keys',
-                    title: __( 'API Keys', 'meiliesearch'),
+                    title: __('API Keys', 'meiliesearch'),
                 },
                 {
                     name: 'indexes',
-                    title: __( 'Indexes', 'meiliesearch' ),
+                    title: __('Indexes', 'meiliesearch'),
                 },
             ]}
         >
             {
                 (tab) => (
-                    <TabPanelItems tab={tab} />
+                    <TabPanelItems tab={tab} {...settingsProps} />
                 )
             }
         </TabPanel>
