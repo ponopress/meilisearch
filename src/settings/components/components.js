@@ -9,6 +9,7 @@ import {
     CardHeader,
     CardBody,
     CardFooter,
+    CardDivider,
     __experimentalText as Text,
     __experimentalHeading as Heading,
     Panel, PanelBody, PanelRow,
@@ -27,6 +28,7 @@ const HostURLControl = ({ value, onChange }) => {
             value={value}
             onChange={onChange}
             type="url"
+            help={__('Enter the URL of your Meilisearch instance.', 'meilisearch')}
         />
     );
 };
@@ -38,6 +40,7 @@ const APIKeyControl = ({ value, onChange }) => {
             value={value}
             onChange={onChange}
             type="text"
+            help={__('Provide the API key to authenticate with Meilisearch.', 'meilisearch')}
         />
     );
 };
@@ -49,6 +52,7 @@ const IndexUIDControl = ({ value, onChange, placeholder }) => {
             value={value}
             onChange={onChange}
             type="text"
+            help={__('Enter uniuqe identifier for index.  Must be an integer or string containing only alphanumeric characters, hyphens and underscores. By default, it\'s value is the slug', 'meilisearch')}
             placeholder={placeholder}
         />
     );
@@ -118,14 +122,14 @@ const APIKeyCard = (settingsProps) => {
     return (
         <Card>
             <CardHeader>
-                <Heading level={3}>{__('API Key', 'meiliesearch')}</Heading>
+                <Heading level={3}>{__('Connection', 'meiliesearch')}</Heading>
                 <ConnectionInfo connectionInfo={connectionInfo} />
             </CardHeader>
             <CardBody>
                 <Flex align="start" justify="normal" gap="12">
                     <FlexBlock style={{ flexBasis: "20%" }}>
                         <h2>Configuration</h2>
-                        <p>Enter the API keys for each reCAPTCHA type you want to use in your forms. Note that each reCAPTCHA type requires a different set of API keys. Generate API keys</p></FlexBlock>
+                        <p>Configure the connection between your site and Meilisearch. <a href="https://www.meilisearch.com/docs/learn/security/basic_security" target='_blank'>Get API keys</a></p></FlexBlock>
                     <FlexBlock style={{ flexBasis: "80%" }}>
                         <HostURLControl
                             value={hostURL}
@@ -183,10 +187,13 @@ const IndexesCard = (settingsProps) => {
             {connectionInfo.status ? (
                 <>
                     <CardBody>
+                        Each index is a collection of documents, similar to a table in a relational database. <a href='https://www.meilisearch.com/docs/learn/core_concepts/indexes' target='_blank'>Learn more.</a> In this plugin context, <b>Posts</b> & <b>Pages</b> are indexes and each posts & pages are the documents.
+                    </CardBody>
+                    <CardBody>
                         <Flex align="start" justify="normal" gap="12">
                             <FlexBlock style={{ flexBasis: "20%" }}>
                                 <h2>Configuration</h2>
-                                <p>Enter the API keys for each reCAPTCHA type you want to use in your forms. Note that each reCAPTCHA type requires a different set of API keys. Generate API keys</p></FlexBlock>
+                                <p>Configure UID (unique identifier) for each index and add documents to each index.<a target='_blank' href='https://www.meilisearch.com/docs/learn/core_concepts/indexes#index-uid'>Learn more.</a></p></FlexBlock>
                             <FlexBlock style={{ flexBasis: "80%" }}>
                                 <Panel header="Indexes">
                                     <PanelBody title="Posts" icon={<Dashicon icon="admin-post" />} >
@@ -222,10 +229,7 @@ const IndexesCard = (settingsProps) => {
                 </>
             ) : (
                 <CardBody>
-                    <div>
-                        
-                        <p><Dashicon style={{color: "red"}} icon="dismiss" /> Error loading indexes: {connectionInfo.error}</p>
-                    </div>
+                    <p><Dashicon style={{ color: "red" }} icon="dismiss" /> Error loading indexes: {connectionInfo.error}</p>
                 </CardBody>
             )}
 
@@ -234,7 +238,7 @@ const IndexesCard = (settingsProps) => {
 }
 
 const TabPanelItems = ({ tab, ...settingsProps }) => {
-    if (tab.name === 'api-keys') {
+    if (tab.name === 'connection') {
         return <APIKeyCard {...settingsProps} />
     } else {
         return <IndexesCard {...settingsProps} />
@@ -250,8 +254,8 @@ const SettingsTabPanel = () => {
             orientation="vertical"
             tabs={[
                 {
-                    name: 'api-keys',
-                    title: __('API Keys', 'meiliesearch'),
+                    name: 'connection',
+                    title: __('Connection', 'meiliesearch'),
                 },
                 {
                     name: 'indexes',
