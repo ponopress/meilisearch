@@ -65,7 +65,6 @@ const useSettings = () => {
 
     const checkConnectionStatus = (client, onFailNotice, onSuccessNotice) => {
         console.log('connection checking')
-        console.log(onFailNotice, onSuccessNotice)
         if (client) {
             client.getVersion()
                 .then(() => {
@@ -99,14 +98,26 @@ const useSettings = () => {
                     display,
                     hostURL,
                     APIKey,
-                    defaultPostTypesUIDs: UIDs
                 },
             },
         }).then(() => {
             createMeiliesearchClient(hostURL, APIKey, onFailNotice, onSuccessNotice)
         })
-
     };
+
+    const updateUIDs = () => {
+        console.log('updating UIDs')
+
+        apiFetch({
+            path: '/wp/v2/settings',
+            method: 'POST',
+            data: {
+                meilisearch_settings: {
+                    defaultPostTypesUIDs: UIDs
+                },
+            },
+        })
+    }
 
     return {
         message,
@@ -122,6 +133,7 @@ const useSettings = () => {
         selectedTab,
         setSelectedTab,
         saveSettings,
+        updateUIDs,
         UIDs,
         setUIDs
     };

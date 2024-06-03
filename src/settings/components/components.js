@@ -1,6 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
+import { store as noticesStore } from '@wordpress/notices';
+import { useDispatch } from '@wordpress/data';
+
 import {
     // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
     TextControl,
@@ -67,18 +70,18 @@ const SaveButton = ({ onClick }) => {
     );
 };
 
-const AddPostDocumentsButton = ({ onClick }) => {
+const AddDocumentsButton = ({ onClick }) => {
     return (
         <Button variant="primary" onClick={onClick} __next40pxDefaultSize>
-            {__('Add Post Documents', 'meilisearch')}
+            {__('Add Documents', 'meilisearch')}
         </Button>
     );
 };
 
-const AddPageDocumentButton = ({ onClick }) => {
+const DeleteIndexButton = ({ onClick }) => {
     return (
-        <Button variant="primary" onClick={onClick} __next40pxDefaultSize>
-            {__('Add Page Documents', 'meilisearch')}
+        <Button variant="secondary" onClick={onClick} __next40pxDefaultSize>
+            {__('Delete Index', 'meilisearch')}
         </Button>
     );
 };
@@ -155,14 +158,16 @@ const IndexesCard = (settingsProps) => {
         connectionInfo,
         meiliesearchClient,
         UIDs,
-        setUIDs
+        setUIDs,
+        updateUIDs
     } = settingsProps
 
     if (!UIDs) {
         return <Spinner />
     }
-
-    const addDocumentsButtonClick = (postType) => {
+    const { createSuccessNotice, createErrorNotice } = useDispatch(noticesStore);
+    const addDocumentsButtonClick = (postType, UID) => {
+        updateUIDs()
         let postObjects = [];
 
         const queryParams = { posts_per_page: -1 }
@@ -174,9 +179,24 @@ const IndexesCard = (settingsProps) => {
                     link: post.link
                 };
             });
-            meiliesearchClient.index(postType).addDocuments(postObjects)
-                .then((res) => console.log(res))
+            meiliesearchClient.index(UID).addDocuments(postObjects)
+                .then((res) => {
+                    console.log(res)
+                    createSuccessNotice(
+                        __(`Documents for ${UID} added successfully.`, 'meilisearch')
+                    );
+                })
         });
+    }
+
+    const deleteIndexButtonClick = (UID) => {
+        meiliesearchClient.deleteIndex(UID)
+            .then((res) => {
+                console.log(res)
+                createErrorNotice(
+                    __(`Index with UID: ${UID} deleted.`, 'meilisearch')
+                );
+            })
     }
 
     return (
@@ -187,13 +207,13 @@ const IndexesCard = (settingsProps) => {
             {connectionInfo.status ? (
                 <>
                     <CardBody>
-                        Each index is a collection of documents, similar to a table in a relational database. <a href='https://www.meilisearch.com/docs/learn/core_concepts/indexes' target='_blank'>Learn more.</a> In this plugin context, <b>Posts</b> & <b>Pages</b> are indexes and each posts & pages are the documents.
+                        Each index is a collection of documents, similar to a table in a relational database. Here, <b>Posts</b> & <b>Pages</b> are indexes and each posts & pages are the documents.<a href='https://www.meilisearch.com/docs/learn/core_concepts/indexes' target='_blank'>Learn more.</a>
                     </CardBody>
                     <CardBody>
                         <Flex align="start" justify="normal" gap="12">
                             <FlexBlock style={{ flexBasis: "20%" }}>
                                 <h2>Configuration</h2>
-                                <p>Configure UID (unique identifier) for each index and add documents to each index.<a target='_blank' href='https://www.meilisearch.com/docs/learn/core_concepts/indexes#index-uid'>Learn more.</a></p></FlexBlock>
+                                <p>Configure <a target='_blank' href='https://www.meilisearch.com/docs/learn/core_concepts/indexes#index-uid'>UID (unique identifier)</a> for each index and add documents to each index.Learn more.</p></FlexBlock>
                             <FlexBlock style={{ flexBasis: "80%" }}>
                                 <Panel header="Indexes">
                                     <PanelBody title="Posts" icon={<Dashicon icon="admin-post" />} >
@@ -207,7 +227,10 @@ const IndexesCard = (settingsProps) => {
                                                 return newUIDs;
                                             })}
                                         />
-                                        <AddPostDocumentsButton onClick={() => addDocumentsButtonClick('posts')} />
+                                        <Flex>
+                                            <AddDocumentsButton onClick={() => addDocumentsButtonClick('posts', UIDs[0])} />
+                                            <DeleteIndexButton onClick={() => deleteIndexButtonClick(UIDs[0])} />
+                                        </Flex>
                                     </PanelBody>
                                     <PanelBody title="Pages" icon={<Dashicon icon="admin-page" />} initialOpen={false}>
                                         <IndexUIDControl
@@ -220,7 +243,10 @@ const IndexesCard = (settingsProps) => {
                                                 return newUIDs;
                                             })}
                                         />
-                                        <AddPageDocumentButton onClick={() => addDocumentsButtonClick('pages')} />
+                                        <Flex>
+                                            <AddDocumentsButton onClick={() => addDocumentsButtonClick('pages', UIDs[1])} />
+                                            <DeleteIndexButton onClick={() => deleteIndexButtonClick(UIDs[1])} />
+                                        </Flex>
                                     </PanelBody>
                                 </Panel>
                             </FlexBlock>
