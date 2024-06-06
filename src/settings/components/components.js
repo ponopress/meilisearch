@@ -119,7 +119,7 @@ const APIKeyCard = (settingsProps) => {
         setHostURL,
         APIKey,
         setAPIKey,
-        saveSettings,
+        connectMeilisearch,
         connectionInfo,
     } = settingsProps
     return (
@@ -147,7 +147,7 @@ const APIKeyCard = (settingsProps) => {
                 </Flex>
             </CardBody>
             <CardFooter justify="right">
-                <SaveButton onClick={saveSettings} />
+                <SaveButton onClick={connectMeilisearch} />
             </CardFooter>
         </Card >
     )

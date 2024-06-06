@@ -92,7 +92,7 @@ const useSettings = () => {
         }
     }
 
-    const saveSettings = () => {
+    const connectMeilisearch = () => {
         console.log('save button click')
 
         apiFetch({
@@ -138,7 +138,7 @@ const useSettings = () => {
         connectionInfo,
         selectedTab,
         setSelectedTab,
-        saveSettings,
+        connectMeilisearch,
         updateUIDs,
         UIDs,
         setUIDs
