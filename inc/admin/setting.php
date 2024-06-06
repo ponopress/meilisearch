@@ -101,7 +101,6 @@ function register_settings() {
             ),
         ),
     );
-
     register_setting(
         'options',
         'meilisearch_settings',

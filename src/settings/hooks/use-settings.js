@@ -10,13 +10,19 @@ const useSettings = () => {
     const [display, setDisplay] = useState(true);
     const [hostURL, setHostURL] = useState('');
     const [APIKey, setAPIKey] = useState('');
-    const [meiliesearchClient, setMeiliesearchClient] = useState('');
+    const [meilisearchClient, setMeiliesearchClient] = useState('');
     const [connectionInfo, setConnectionInfo] = useState({
         status: false,
         error: null,
     });
     const [selectedTab, setSelectedTab] = useState('');
-    const [UIDs, setUIDs] = useState(['post', 'page']);
+    const [UIDs, setUIDs] = useState();
+
+    let meilisearchSettings = {
+        hostURL,
+        APIKey,
+        defaultPostTypesUIDs: UIDs    
+    }
 
     const { createSuccessNotice, createErrorNotice } = useDispatch(noticesStore);
     useEffect(() => {
@@ -94,8 +100,7 @@ const useSettings = () => {
             method: 'POST',
             data: {
                 meilisearch_settings: {
-                    message,
-                    display,
+                    ...meilisearchSettings,
                     hostURL,
                     APIKey,
                 },
@@ -107,12 +112,13 @@ const useSettings = () => {
 
     const updateUIDs = () => {
         console.log('updating UIDs')
-
+        
         apiFetch({
             path: '/wp/v2/settings',
             method: 'POST',
             data: {
                 meilisearch_settings: {
+                    ...meilisearchSettings,
                     defaultPostTypesUIDs: UIDs
                 },
             },
@@ -128,7 +134,7 @@ const useSettings = () => {
         setHostURL,
         APIKey,
         setAPIKey,
-        meiliesearchClient,
+        meilisearchClient,
         connectionInfo,
         selectedTab,
         setSelectedTab,

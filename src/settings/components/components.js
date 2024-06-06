@@ -125,7 +125,7 @@ const APIKeyCard = (settingsProps) => {
     return (
         <Card>
             <CardHeader>
-                <Heading level={3}>{__('Connection', 'meiliesearch')}</Heading>
+                <Heading level={3}>{__('Connection', 'meilisearch')}</Heading>
                 <ConnectionInfo connectionInfo={connectionInfo} />
             </CardHeader>
             <CardBody>
@@ -156,12 +156,11 @@ const APIKeyCard = (settingsProps) => {
 const IndexesCard = (settingsProps) => {
     const {
         connectionInfo,
-        meiliesearchClient,
+        meilisearchClient,
         UIDs,
         setUIDs,
         updateUIDs
     } = settingsProps
-
     if (!UIDs) {
         return <Spinner />
     }
@@ -179,7 +178,7 @@ const IndexesCard = (settingsProps) => {
                     link: post.link
                 };
             });
-            meiliesearchClient.index(UID).addDocuments(postObjects)
+            meilisearchClient.index(UID).addDocuments(postObjects)
                 .then((res) => {
                     console.log(res)
                     createSuccessNotice(
@@ -190,7 +189,7 @@ const IndexesCard = (settingsProps) => {
     }
 
     const deleteIndexButtonClick = (UID) => {
-        meiliesearchClient.deleteIndex(UID)
+        meilisearchClient.deleteIndex(UID)
             .then((res) => {
                 console.log(res)
                 createErrorNotice(
@@ -202,7 +201,7 @@ const IndexesCard = (settingsProps) => {
     return (
         <Card>
             <CardHeader>
-                <Heading level={3}>{__('Indexes', 'meiliesearch')}</Heading>
+                <Heading level={3}>{__('Indexes', 'meilisearch')}</Heading>
             </CardHeader>
             {connectionInfo.status ? (
                 <>
@@ -281,11 +280,11 @@ const SettingsTabPanel = () => {
             tabs={[
                 {
                     name: 'connection',
-                    title: __('Connection', 'meiliesearch'),
+                    title: __('Connection', 'meilisearch'),
                 },
                 {
                     name: 'indexes',
-                    title: __('Indexes', 'meiliesearch'),
+                    title: __('Indexes', 'meilisearch'),
                 },
             ]}
         >
