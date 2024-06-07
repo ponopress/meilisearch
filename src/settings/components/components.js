@@ -123,7 +123,9 @@ const APIKeyCard = (settingsProps) => {
         connectionInfo,
     } = settingsProps
     return (
-        <Card>
+        <Card 
+        size="medium"
+        >
             <CardHeader>
                 <Heading level={3}>{__('Connection', 'meilisearch')}</Heading>
                 <ConnectionInfo connectionInfo={connectionInfo} />
@@ -212,7 +214,7 @@ const IndexesCard = (settingsProps) => {
                         <Flex align="start" justify="normal" gap="12">
                             <FlexBlock style={{ flexBasis: "20%" }}>
                                 <h2>Configuration</h2>
-                                <p>Configure <a target='_blank' href='https://www.meilisearch.com/docs/learn/core_concepts/indexes#index-uid'>UID (unique identifier)</a> for each index and add documents to each index.Learn more.</p></FlexBlock>
+                                <p>Configure <a target='_blank' href='https://www.meilisearch.com/docs/learn/core_concepts/indexes#index-uid'>UID (unique identifier)</a> for each index and add documents to each index.</p></FlexBlock>
                             <FlexBlock style={{ flexBasis: "80%" }}>
                                 <Panel header="Indexes">
                                     <PanelBody title="Posts" icon={<Dashicon icon="admin-post" />} >

@@ -5,6 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import App from '../Meilisearch'
+import AppAutoComplete from '../Autocomplete'
 /**
  * React hook that is used to mark the block wrapper element.
  * It provides all the necessary props like the class name.
@@ -32,8 +33,9 @@ import './editor.scss';
 export default function Edit() {
 	return (
 		<div {...useBlockProps()}>
-			<App />
-			{__('Meilisearch – hello from the editor!', 'meilisearch')}
+			<div id='hello-test'></div>
+			<AppAutoComplete />
+			{/* <App /> */}
 		</div>
 	);
 }

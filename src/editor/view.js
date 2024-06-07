@@ -24,23 +24,23 @@ import { Spinner } from '@wordpress/components';
 import App from '../Meilisearch'
 import AppAutoComplete from '../Autocomplete'
 
-window.addEventListener( 'DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
 	const element = document.querySelector(
 		'.wp-block-create-block-meilisearch'
 	);
-	if ( element ) {
+	if (element) {
 		const attributes = { ...element.dataset };
 		render(
-			<Suspense fallback={ <Spinner/> }>
-				<App />
+			<Suspense fallback={<Spinner />}>
+				<div id='hello-test'></div>
 				<AppAutoComplete />
 			</Suspense>,
 			element
 		);
 	}
-} );
+});
 
-	
+
 /* eslint-disable no-console */
-console.log( 'Hello World! (from create-block-meilisearch block)' );
+console.log('Hello World! (from create-block-meilisearch block)');
 /* eslint-enable no-console */

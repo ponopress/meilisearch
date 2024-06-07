@@ -4,6 +4,9 @@ import { store as noticesStore } from '@wordpress/notices';
 import { useEffect, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { MeiliSearch } from 'meilisearch'
+import {
+    meilisearchAutocompleteClient,
+} from '@meilisearch/autocomplete-client'
 
 const useSettings = () => {
     const [message, setMessage] = useState('Hello, World!');
@@ -11,6 +14,7 @@ const useSettings = () => {
     const [hostURL, setHostURL] = useState('');
     const [APIKey, setAPIKey] = useState('');
     const [meilisearchClient, setMeiliesearchClient] = useState('');
+    const [searchClient, setSearchAutocompleteClient] = useState('');
     const [connectionInfo, setConnectionInfo] = useState({
         status: false,
         error: null,
@@ -37,6 +41,13 @@ const useSettings = () => {
             }
 
             createMeiliesearchClient(settings.meilisearch_settings.hostURL, settings.meilisearch_settings.APIKey)
+
+            const searchClient = meilisearchAutocompleteClient({
+                url: settings.meilisearch_settings.hostURL, // Host
+                apiKey: settings.meilisearch_settings.APIKey  // API key
+            })
+            setSearchAutocompleteClient(searchClient)
+        
         })
     }, [])
 
@@ -141,7 +152,8 @@ const useSettings = () => {
         connectMeilisearch,
         updateUIDs,
         UIDs,
-        setUIDs
+        setUIDs,
+        searchClient
     };
 };
 
