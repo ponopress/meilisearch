@@ -33,7 +33,6 @@ export default function Edit() {
 	return (
 		<div {...useBlockProps()}>
 			<YutoAutocomplete />
-			{/* <YutoInstantSearch /> */}
 		</div>
 	);
 }

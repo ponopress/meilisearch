@@ -21,7 +21,6 @@
  */
 import { render, Suspense } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
-// import YutoInstantSearch from '../YutoInstantSearch'
 import YutoAutocomplete from './YutoAutocomplete'
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -34,15 +33,9 @@ window.addEventListener('DOMContentLoaded', () => {
 			render(
 				<Suspense fallback={<Spinner />}>
 					<YutoAutocomplete />
-					{/* <YutoInstantSearch /> */}
 				</Suspense>,
 				element
 			);
 		})
 	}
 });
-
-
-/* eslint-disable no-console */
-console.log('Hello World! (from yuto-meilisearch block)');
-/* eslint-enable no-console */

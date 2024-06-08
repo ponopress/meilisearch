@@ -1,6 +1,6 @@
 import { autocomplete } from '@algolia/autocomplete-js';
 import { getMeilisearchResults } from '@meilisearch/autocomplete-client';
-import { useSettings } from '../settings/hooks';
+import { useSettings } from '../../hooks';
 import { Spinner } from '@wordpress/components';
 import { useEffect, useRef } from '@wordpress/element';
 

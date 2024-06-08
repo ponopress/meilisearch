@@ -22,7 +22,7 @@ import {
     Spinner
 } from '@wordpress/components';
 import { post, page, seen, color } from '@wordpress/icons';
-import { useSettings } from '../hooks';
+import { useSettings } from '../../hooks';
 
 const HostURLControl = ({ value, onChange }) => {
     return (
