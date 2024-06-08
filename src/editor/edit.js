@@ -34,7 +34,7 @@ export default function Edit() {
 	return (
 		<div {...useBlockProps()}>
 			<div id='hello-test'></div>
-			<AppAutoComplete />
+			<AppAutoComplete container={"#hello-test"} />
 			{/* <App /> */}
 		</div>
 	);

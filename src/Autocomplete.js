@@ -1,21 +1,19 @@
 import { autocomplete } from '@algolia/autocomplete-js'
 import {
-    meilisearchAutocompleteClient,
     getMeilisearchResults,
 } from '@meilisearch/autocomplete-client'
-import '@algolia/autocomplete-theme-classic'
 import { useSettings } from './settings/hooks';
 import { Spinner } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 
-const AppAutoComplete = () => {
+const AppAutoComplete = ({container}) => {
     const {searchClient} = useSettings();
     useEffect(() => {
         if (!searchClient) {
             return;
         }
         const autocompleteInstance = autocomplete({
-            container: '#hello-test',
+            container: container,
             placeholder: 'Search for games',
             getSources({ query }) {
                 return [

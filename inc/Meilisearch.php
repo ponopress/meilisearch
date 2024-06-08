@@ -79,8 +79,8 @@ final class Meilisearch {
 	 * @since 1.0.0
 	 */
 	public function includes() {
-		include_once MS_ABSPATH . 'inc/block.php';
-		include_once MS_ABSPATH . 'inc/admin/setting.php';
+		include_once YUTO_ABSPATH . 'inc/block.php';
+		include_once YUTO_ABSPATH . 'inc/admin/setting.php';
 	}
 
 	/**
@@ -89,10 +89,10 @@ final class Meilisearch {
 	 * @since 1.4.0
 	 */
 	private function define_constants() {
-		$this->define( 'MS_ABSPATH', dirname( MS_PLUGIN_FILE ) . '/' );
-		$this->define( 'MS_VERSION', get_file_data( MS_PLUGIN_FILE, [ 'Version' ] )[0] ); // phpcs:ignore
-		$this->define( 'MS_PLUGIN_URL', plugin_dir_url( MS_PLUGIN_FILE ) );
-		$this->define( 'MS_PLUGIN_BASENAME', plugin_basename( MS_PLUGIN_FILE ) );
+		$this->define( 'YUTO_ABSPATH', dirname( YUTO_PLUGIN_FILE ) . '/' );
+		$this->define( 'YUTO_VERSION', get_file_data( YUTO_PLUGIN_FILE, [ 'Version' ] )[0] ); // phpcs:ignore
+		$this->define( 'YUTO_PLUGIN_URL', plugin_dir_url( YUTO_PLUGIN_FILE ) );
+		$this->define( 'YUTO_PLUGIN_BASENAME', plugin_basename( YUTO_PLUGIN_FILE ) );
 	}
 
 	/**

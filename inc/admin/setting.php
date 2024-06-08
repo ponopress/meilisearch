@@ -43,7 +43,7 @@ function enqueue_settings_assets( $admin_page ) {
         return;
     }
 
-    $asset_file = MS_ABSPATH . 'build/settings/index.asset.php';
+    $asset_file = YUTO_ABSPATH . 'build/settings/index.asset.php';
 
     if ( ! file_exists( $asset_file ) ) {
         return;
@@ -53,7 +53,7 @@ function enqueue_settings_assets( $admin_page ) {
 
     wp_enqueue_script(
         'meilisearch',
-        MS_PLUGIN_URL. 'build/settings/index.js',
+        YUTO_PLUGIN_URL. 'build/settings/index.js',
         $asset['dependencies'],
         $asset['version'],
         array(
@@ -62,7 +62,7 @@ function enqueue_settings_assets( $admin_page ) {
     );
     wp_enqueue_style(
         'meilisearch',
-        MS_PLUGIN_URL. 'build/settings/index.css',
+        YUTO_PLUGIN_URL. 'build/settings/index.css',
         array_filter(
             $asset['dependencies'],
             function ( $style ) {

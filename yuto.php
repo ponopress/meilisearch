@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Meilisearch
+ * Plugin Name:       Yuto
  * Plugin URI:        https://ponopress.com/plugins/meilisearch
  * Description:       WordPress plugin for Meilisearch
  * Requires at least: 6.3
@@ -17,12 +17,12 @@
 
  defined( 'ABSPATH' ) || exit;
 
- if ( ! defined( 'MS_PLUGIN_FILE' ) ) {
-	 define( 'MS_PLUGIN_FILE', __FILE__ );
+ if ( ! defined( 'YUTO_PLUGIN_FILE' ) ) {
+	 define( 'YUTO_PLUGIN_FILE', __FILE__ );
  }
  
  if ( ! class_exists( 'MeiliSearch' ) ) {
-	 include_once dirname( MS_PLUGIN_FILE ) . '/inc/Meilisearch.php';
+	 include_once dirname( YUTO_PLUGIN_FILE ) . '/inc/Meilisearch.php';
  }
  
  /**

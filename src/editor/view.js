@@ -25,18 +25,20 @@ import App from '../Meilisearch'
 import AppAutoComplete from '../Autocomplete'
 
 window.addEventListener('DOMContentLoaded', () => {
-	const element = document.querySelector(
+	const elements = document.querySelectorAll(
 		'.wp-block-create-block-meilisearch'
 	);
-	if (element) {
-		const attributes = { ...element.dataset };
-		render(
-			<Suspense fallback={<Spinner />}>
-				<div id='hello-test'></div>
-				<AppAutoComplete />
-			</Suspense>,
-			element
-		);
+	if (elements) {
+		elements.forEach(element => {
+			const attributes = { ...element.dataset };
+			render(
+				<Suspense fallback={<Spinner />}>
+					<div id='hello-test'></div>
+					<AppAutoComplete container={"#hello-test"} />
+				</Suspense>,
+				element
+			);
+		})
 	}
 });
 

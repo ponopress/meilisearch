@@ -12,6 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function meilisearch_block_init() {
-	register_block_type( MS_ABSPATH . 'build/editor' );
+	register_block_type( YUTO_ABSPATH . 'build/editor' );
 }
 add_action( 'init', 'meilisearch_block_init' );
