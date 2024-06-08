@@ -21,20 +21,20 @@
  */
 import { render, Suspense } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
-import App from '../Meilisearch'
-import AppAutoComplete from '../Autocomplete'
+// import YutoInstantSearch from '../YutoInstantSearch'
+import YutoAutocomplete from './YutoAutocomplete'
 
 window.addEventListener('DOMContentLoaded', () => {
 	const elements = document.querySelectorAll(
-		'.wp-block-create-block-meilisearch'
+		'.wp-block-yuto-meilisearch'
 	);
 	if (elements) {
 		elements.forEach(element => {
 			const attributes = { ...element.dataset };
 			render(
 				<Suspense fallback={<Spinner />}>
-					<div id='hello-test'></div>
-					<AppAutoComplete container={"#hello-test"} />
+					<YutoAutocomplete />
+					{/* <YutoInstantSearch /> */}
 				</Suspense>,
 				element
 			);
@@ -44,5 +44,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 /* eslint-disable no-console */
-console.log('Hello World! (from create-block-meilisearch block)');
+console.log('Hello World! (from yuto-meilisearch block)');
 /* eslint-enable no-console */

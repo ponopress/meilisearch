@@ -2,11 +2,11 @@
 /**
  * Add the plugin settings page.
  *
- * @package meilisearch
+ * @package yuto
  * @since   0.0.1
  */
 
-namespace Meilisearch\Admin;
+namespace Yuto\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,10 +17,10 @@ defined( 'ABSPATH' ) || exit;
  */
 function add_settings_page() {
 	add_menu_page(
-		__( 'Meilisearch', 'meilisearch' ),
-		__( 'Meilisearch', 'meilisearch' ),
+		__( 'Yuto', 'yuto' ),
+		__( 'Yuto', 'yuto' ),
 		'manage_options',
-		'meilisearch-settings',
+		'yuto-settings',
 		__NAMESPACE__ . '\print_settings_page',
         'dashicons-search'
 	);
@@ -34,12 +34,12 @@ add_action( 'admin_menu', __NAMESPACE__ . '\add_settings_page' );
  */
 function print_settings_page() {
 	?>
-		<div class="wrap" id="meilisearch-settings"></div>
+		<div class="wrap" id="yuto-settings"></div>
 	<?php
 }
 
 function enqueue_settings_assets( $admin_page ) {
-    if ( 'toplevel_page_meilisearch-settings' !== $admin_page ) {
+    if ( 'toplevel_page_yuto-settings' !== $admin_page ) {
         return;
     }
 
@@ -52,7 +52,7 @@ function enqueue_settings_assets( $admin_page ) {
     $asset = include $asset_file;
 
     wp_enqueue_script(
-        'meilisearch',
+        'yuto',
         YUTO_PLUGIN_URL. 'build/settings/index.js',
         $asset['dependencies'],
         $asset['version'],
@@ -61,7 +61,7 @@ function enqueue_settings_assets( $admin_page ) {
         )
     );
     wp_enqueue_style(
-        'meilisearch',
+        'yuto',
         YUTO_PLUGIN_URL. 'build/settings/index.css',
         array_filter(
             $asset['dependencies'],
@@ -103,7 +103,7 @@ function register_settings() {
     );
     register_setting(
         'options',
-        'meilisearch_settings',
+        'yuto_settings',
         array(
             'type'         => 'object',
             'default'      => $default,

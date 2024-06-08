@@ -1,4 +1,4 @@
-=== Wp Meilisearch ===
+=== Yuto - WordPress plugin for Meilisearch integration ===
 Contributors: (this should be a list of wordpress.org userid's)
 Donate link: https://example.com/
 Tags: comments, spam

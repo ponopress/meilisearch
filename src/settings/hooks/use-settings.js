@@ -22,7 +22,7 @@ const useSettings = () => {
     const [selectedTab, setSelectedTab] = useState('');
     const [UIDs, setUIDs] = useState();
 
-    let meilisearchSettings = {
+    let yutoSettings = {
         hostURL,
         APIKey,
         defaultPostTypesUIDs: UIDs    
@@ -32,19 +32,19 @@ const useSettings = () => {
     useEffect(() => {
         console.log('api fetching')
         apiFetch({ path: '/wp/v2/settings' }).then((settings) => {
-            if (settings.meilisearch_settings) {
-                setMessage(settings.meilisearch_settings.message);
-                setDisplay(settings.meilisearch_settings.display);
-                setHostURL(settings.meilisearch_settings.hostURL);
-                setAPIKey(settings.meilisearch_settings.APIKey);
-                setUIDs(settings.meilisearch_settings.defaultPostTypesUIDs);
+            if (settings.yuto_settings) {
+                setMessage(settings.yuto_settings.message);
+                setDisplay(settings.yuto_settings.display);
+                setHostURL(settings.yuto_settings.hostURL);
+                setAPIKey(settings.yuto_settings.APIKey);
+                setUIDs(settings.yuto_settings.defaultPostTypesUIDs);
             }
 
-            createMeiliesearchClient(settings.meilisearch_settings.hostURL, settings.meilisearch_settings.APIKey)
+            createMeiliesearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.APIKey)
 
             const searchClient = meilisearchAutocompleteClient({
-                url: settings.meilisearch_settings.hostURL, // Host
-                apiKey: settings.meilisearch_settings.APIKey  // API key
+                url: settings.yuto_settings.hostURL, // Host
+                apiKey: settings.yuto_settings.APIKey  // API key
             })
             setSearchAutocompleteClient(searchClient)
         
@@ -110,8 +110,8 @@ const useSettings = () => {
             path: '/wp/v2/settings',
             method: 'POST',
             data: {
-                meilisearch_settings: {
-                    ...meilisearchSettings,
+                yuto_settings: {
+                    ...yutoSettings,
                     hostURL,
                     APIKey,
                 },
@@ -128,8 +128,8 @@ const useSettings = () => {
             path: '/wp/v2/settings',
             method: 'POST',
             data: {
-                meilisearch_settings: {
-                    ...meilisearchSettings,
+                yuto_settings: {
+                    ...yutoSettings,
                     defaultPostTypesUIDs: UIDs
                 },
             },

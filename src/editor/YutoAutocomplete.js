@@ -1,19 +1,20 @@
-import { autocomplete } from '@algolia/autocomplete-js'
-import {
-    getMeilisearchResults,
-} from '@meilisearch/autocomplete-client'
-import { useSettings } from './settings/hooks';
+import { autocomplete } from '@algolia/autocomplete-js';
+import { getMeilisearchResults } from '@meilisearch/autocomplete-client';
+import { useSettings } from '../settings/hooks';
 import { Spinner } from '@wordpress/components';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 
-const AppAutoComplete = ({container}) => {
-    const {searchClient} = useSettings();
+const YutoAutocomplete = () => {
+    const { searchClient } = useSettings();
+    const containerRef = useRef(null);
+
     useEffect(() => {
-        if (!searchClient) {
+        if (!searchClient || !containerRef.current) {
             return;
         }
+
         const autocompleteInstance = autocomplete({
-            container: container,
+            container: containerRef.current,
             placeholder: 'Search for games',
             getSources({ query }) {
                 return [
@@ -51,6 +52,8 @@ const AppAutoComplete = ({container}) => {
     if (!searchClient) {
         return <Spinner />;
     }
-}
 
-export default AppAutoComplete
+    return <div ref={containerRef}></div>;
+};
+
+export default YutoAutocomplete;

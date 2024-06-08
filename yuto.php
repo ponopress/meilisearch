@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Yuto
  * Plugin URI:        https://ponopress.com/plugins/meilisearch
- * Description:       WordPress plugin for Meilisearch
+ * Description:       WordPress plugin for Meilisearch integration
  * Requires at least: 6.3
  * Requires PHP:      7.0
  * Version:           0.0.1
@@ -22,17 +22,17 @@
  }
  
  if ( ! class_exists( 'MeiliSearch' ) ) {
-	 include_once dirname( YUTO_PLUGIN_FILE ) . '/inc/Meilisearch.php';
+	 include_once dirname( YUTO_PLUGIN_FILE ) . '/inc/Yuto.php';
  }
  
  /**
   * The main function that returns the MeiliSearch class
   *
   * @since 1.0.0
-  * @return object|Meilisearch
+  * @return object|Yuto
   */
  function meilisearch_load_plugin() {
-	 return Meilisearch::instance();
+	 return Yuto::instance();
  }
  
  // Get the plugin running.

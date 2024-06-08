@@ -3,10 +3,10 @@
 	"apiVersion": 3,
 	"name": "yuto/meilisearch",
 	"version": "0.1.0",
-	"title": "Meilisearch",
+	"title": "Autocomplete Search",
 	"category": "widgets",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Yuto - Meilisearch Autocomplete.",
 	"example": {},
 	"supports": {
 		"html": false

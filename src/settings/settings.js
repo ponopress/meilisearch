@@ -4,7 +4,7 @@ import { SettingsPage } from './components';
 
 domReady( () => {
 	const root = createRoot(
-		document.getElementById( 'meilisearch-settings' )
+		document.getElementById( 'yuto-settings' )
 	);
 
 	root.render( <SettingsPage /> );

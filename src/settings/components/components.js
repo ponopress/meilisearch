@@ -27,11 +27,11 @@ import { useSettings } from '../hooks';
 const HostURLControl = ({ value, onChange }) => {
     return (
         <TextControl
-            label={__('Host URL', 'meilisearch')}
+            label={__('Host URL', 'yuto')}
             value={value}
             onChange={onChange}
             type="url"
-            help={__('Enter the URL of your Meilisearch instance.', 'meilisearch')}
+            help={__('Enter the URL of your Meilisearch instance.', 'yuto')}
         />
     );
 };
@@ -39,11 +39,11 @@ const HostURLControl = ({ value, onChange }) => {
 const APIKeyControl = ({ value, onChange }) => {
     return (
         <TextControl
-            label={__('API Key', 'meilisearch')}
+            label={__('API Key', 'yuto')}
             value={value}
             onChange={onChange}
             type="text"
-            help={__('Provide the API key to authenticate with Meilisearch.', 'meilisearch')}
+            help={__('Provide the API key to authenticate with Meilisearch.', 'yuto')}
         />
     );
 };
@@ -51,11 +51,11 @@ const APIKeyControl = ({ value, onChange }) => {
 const IndexUIDControl = ({ value, onChange, placeholder }) => {
     return (
         <TextControl
-            label={__('Index UID', 'meilisearch')}
+            label={__('Index UID', 'yuto')}
             value={value}
             onChange={onChange}
             type="text"
-            help={__('Enter uniuqe identifier for index.  Must be an integer or string containing only alphanumeric characters, hyphens and underscores. By default, it\'s value is the slug', 'meilisearch')}
+            help={__('Enter uniuqe identifier for index.  Must be an integer or string containing only alphanumeric characters, hyphens and underscores. By default, it\'s value is the slug', 'yuto')}
             placeholder={placeholder}
         />
     );
@@ -65,7 +65,7 @@ const IndexUIDControl = ({ value, onChange, placeholder }) => {
 const SaveButton = ({ onClick }) => {
     return (
         <Button variant="primary" onClick={onClick} __next40pxDefaultSize>
-            {__('CONNECT', 'meilisearch')}
+            {__('CONNECT', 'yuto')}
         </Button>
     );
 };
@@ -73,7 +73,7 @@ const SaveButton = ({ onClick }) => {
 const AddDocumentsButton = ({ onClick }) => {
     return (
         <Button variant="primary" onClick={onClick} __next40pxDefaultSize>
-            {__('Add Documents', 'meilisearch')}
+            {__('Add Documents', 'yuto')}
         </Button>
     );
 };
@@ -81,7 +81,7 @@ const AddDocumentsButton = ({ onClick }) => {
 const DeleteIndexButton = ({ onClick }) => {
     return (
         <Button variant="secondary" onClick={onClick} __next40pxDefaultSize>
-            {__('Delete Index', 'meilisearch')}
+            {__('Delete Index', 'yuto')}
         </Button>
     );
 };
@@ -89,22 +89,22 @@ const DeleteIndexButton = ({ onClick }) => {
 const SettingsTitle = () => {
     return (
         <Heading level={1}>
-            {__('Meiliesearch', 'meilisearch')}
+            {__('Meiliesearch', 'yuto')}
         </Heading>
     );
 };
 
 const ConnectionInfo = ({ connectionInfo }) => {
     return (
-        <div className='meilisearch__connection-info'>
+        <div className='yuto__connection-info'>
             <span>Connection Status: </span>
             {connectionInfo.status ? (
-                <span className='meilisearch__connection-info__status success'>
+                <span className='yuto__connection-info__status success'>
                     <span>Connected </span>
                 </span>
             ) : (
                 <span>
-                    <span className='meilisearch__connection-info__status error'>
+                    <span className='yuto__connection-info__status error'>
                         <span>Disconnected </span>
                     </span>
                 </span>
@@ -127,7 +127,7 @@ const APIKeyCard = (settingsProps) => {
         size="medium"
         >
             <CardHeader>
-                <Heading level={3}>{__('Connection', 'meilisearch')}</Heading>
+                <Heading level={3}>{__('Connection', 'yuto')}</Heading>
                 <ConnectionInfo connectionInfo={connectionInfo} />
             </CardHeader>
             <CardBody>
@@ -184,7 +184,7 @@ const IndexesCard = (settingsProps) => {
                 .then((res) => {
                     console.log(res)
                     createSuccessNotice(
-                        __(`Documents for ${UID} added successfully.`, 'meilisearch')
+                        __(`Documents for ${UID} added successfully.`, 'yuto')
                     );
                 })
         });
@@ -195,7 +195,7 @@ const IndexesCard = (settingsProps) => {
             .then((res) => {
                 console.log(res)
                 createErrorNotice(
-                    __(`Index with UID: ${UID} deleted.`, 'meilisearch')
+                    __(`Index with UID: ${UID} deleted.`, 'yuto')
                 );
             })
     }
@@ -203,7 +203,7 @@ const IndexesCard = (settingsProps) => {
     return (
         <Card>
             <CardHeader>
-                <Heading level={3}>{__('Indexes', 'meilisearch')}</Heading>
+                <Heading level={3}>{__('Indexes', 'yuto')}</Heading>
             </CardHeader>
             {connectionInfo.status ? (
                 <>
@@ -277,16 +277,16 @@ const SettingsTabPanel = () => {
 
     return (
         <TabPanel
-            className="meilisearch__settings-tab-panel"
+            className="yuto__settings-tab-panel"
             orientation="vertical"
             tabs={[
                 {
                     name: 'connection',
-                    title: __('Connection', 'meilisearch'),
+                    title: __('Connection', 'yuto'),
                 },
                 {
                     name: 'indexes',
-                    title: __('Indexes', 'meilisearch'),
+                    title: __('Indexes', 'yuto'),
                 },
             ]}
         >

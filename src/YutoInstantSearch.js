@@ -4,7 +4,7 @@ import { Spinner } from '@wordpress/components';
 
 import { useSettings } from './settings/hooks';
 
-const App = () => {
+const YutoInstantSearch = () => {
     const {
         hostURL,
         APIKey,
@@ -33,4 +33,4 @@ const App = () => {
 
 const Hit = ({ hit }) => <Highlight attribute="title" hit={hit} />;
 
-export default App
+export default YutoInstantSearch

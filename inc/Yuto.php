@@ -1,25 +1,25 @@
 <?php
 /**
- * Setup Meilisearch
+ * Setup Yuto
  *
- * @package meilisearch
+ * @package yuto
  * @since   1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Main Meilisearch Class.
+ * Main Yuto Class.
  *
  * @since 1.0.0
  */
-final class Meilisearch {
+final class Yuto {
 
 	/**
-	 * Return singleton instance of the Meilisearch plugin.
+	 * Return singleton instance of the Yuto plugin.
 	 *
 	 * @since 1.0.0
-	 * @return Meilisearch
+	 * @return Yuto
 	 */
 	public static function instance() {
 		static $instance = false;
@@ -38,7 +38,7 @@ final class Meilisearch {
 	public function __clone() {
 		_doing_it_wrong(
 			__FUNCTION__,
-			esc_html__( 'Cloning instances of the class is forbidden.', 'meilisearch' ),
+			esc_html__( 'Cloning instances of the class is forbidden.', 'yuto' ),
 			'1.0'
 		);
 	}
@@ -51,7 +51,7 @@ final class Meilisearch {
 	public function __wakeup() {
 		_doing_it_wrong(
 			__FUNCTION__,
-			esc_html__( 'Unserializing instances of the class is forbidden.', 'meilisearch' ),
+			esc_html__( 'Unserializing instances of the class is forbidden.', 'yuto' ),
 			'1.0'
 		);
 	}
@@ -84,7 +84,7 @@ final class Meilisearch {
 	}
 
 	/**
-	 * Define the contants for the Meilisearch plugin.
+	 * Define the contants for the Yuto plugin.
 	 *
 	 * @since 1.4.0
 	 */

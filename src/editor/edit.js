@@ -4,8 +4,6 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
  */
 import { __ } from '@wordpress/i18n';
-import App from '../Meilisearch'
-import AppAutoComplete from '../Autocomplete'
 /**
  * React hook that is used to mark the block wrapper element.
  * It provides all the necessary props like the class name.
@@ -21,6 +19,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
 import './editor.scss';
+import YutoAutocomplete from './YutoAutocomplete';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -33,9 +32,8 @@ import './editor.scss';
 export default function Edit() {
 	return (
 		<div {...useBlockProps()}>
-			<div id='hello-test'></div>
-			<AppAutoComplete container={"#hello-test"} />
-			{/* <App /> */}
+			<YutoAutocomplete />
+			{/* <YutoInstantSearch /> */}
 		</div>
 	);
 }
