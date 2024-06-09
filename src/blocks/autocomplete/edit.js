@@ -20,6 +20,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import './editor.scss';
 import YutoAutocomplete from './YutoAutocomplete';
+import InspectorSettings from './inspector-settings';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -29,10 +30,19 @@ import YutoAutocomplete from './YutoAutocomplete';
  *
  * @return {Element} Element to render.
  */
-export default function Edit() {
+export default function Edit(props) {
+	const {attributes} = props
+	const blockProps = useBlockProps( {
+		dataset: 'nepal',
+		className: 'hello'
+	} );
+
 	return (
-		<div {...useBlockProps()}>
-			<YutoAutocomplete />
+		<div {...blockProps}>
+			<InspectorSettings
+				{...props}
+			/>
+			<YutoAutocomplete attributes={attributes} />
 		</div>
 	);
 }

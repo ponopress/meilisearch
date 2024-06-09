@@ -29,10 +29,11 @@ window.addEventListener('DOMContentLoaded', () => {
 	);
 	if (elements) {
 		elements.forEach(element => {
-			const attributes = { ...element.dataset };
+			const autocompleteData = { ...element.dataset }
+			let data = JSON.parse(autocompleteData.autocompleteAttributes)
 			render(
 				<Suspense fallback={<Spinner />}>
-					<YutoAutocomplete />
+					<YutoAutocomplete attributes={data}/>
 				</Suspense>,
 				element
 			);

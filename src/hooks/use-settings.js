@@ -14,7 +14,7 @@ const useSettings = () => {
     const [hostURL, setHostURL] = useState('');
     const [APIKey, setAPIKey] = useState('');
     const [meilisearchClient, setMeiliesearchClient] = useState('');
-    const [searchClient, setSearchAutocompleteClient] = useState('');
+    const [autocompleteSearchClient, setAutocompleteSearchClient] = useState(false);
     const [connectionInfo, setConnectionInfo] = useState({
         status: false,
         error: null,
@@ -25,7 +25,7 @@ const useSettings = () => {
     let yutoSettings = {
         hostURL,
         APIKey,
-        defaultPostTypesUIDs: UIDs    
+        defaultPostTypesUIDs: UIDs
     }
 
     const { createSuccessNotice, createErrorNotice } = useDispatch(noticesStore);
@@ -41,22 +41,24 @@ const useSettings = () => {
             }
 
             createMeiliesearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.APIKey)
-
-            const searchClient = meilisearchAutocompleteClient({
-                url: settings.yuto_settings.hostURL, // Host
-                apiKey: settings.yuto_settings.APIKey  // API key
-            })
-            setSearchAutocompleteClient(searchClient)
-        
+            createAutocompleteSearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.APIKey)
         })
     }, [])
 
-    const createMeiliesearchClient = (host, apiKey, onFailNotice, onSuccessNotice) => {
+    const createAutocompleteSearchClient = (host, APIKey) => {
+        const searchClient = meilisearchAutocompleteClient({
+            url: host, // Host
+            apiKey: APIKey  // API key
+        })
+        setAutocompleteSearchClient(searchClient)
+    }
+
+    const createMeiliesearchClient = (host, APIKey, onFailNotice, onSuccessNotice) => {
         let client
         try {
             client = new MeiliSearch({
                 host: host,
-                apiKey: apiKey
+                apiKey: APIKey
             });
         } catch (error) {
             console.log('fail')
@@ -77,7 +79,7 @@ const useSettings = () => {
     }
 
     const onFailNotice = (errorMessage) => {
-        createErrorNotice( errorMessage );
+        createErrorNotice(errorMessage);
     }
 
     const checkConnectionStatus = (client, onFailNotice, onSuccessNotice) => {
@@ -98,7 +100,7 @@ const useSettings = () => {
                         status: false,
                         error: error.message,
                     });
-                    onFailNotice && onFailNotice( error.message)
+                    onFailNotice && onFailNotice(error.message)
                 });
         }
     }
@@ -123,7 +125,7 @@ const useSettings = () => {
 
     const updateUIDs = () => {
         console.log('updating UIDs')
-        
+
         apiFetch({
             path: '/wp/v2/settings',
             method: 'POST',
@@ -153,7 +155,7 @@ const useSettings = () => {
         updateUIDs,
         UIDs,
         setUIDs,
-        searchClient
+        autocompleteSearchClient
     };
 };
 

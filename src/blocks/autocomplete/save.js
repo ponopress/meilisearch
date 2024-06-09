@@ -14,9 +14,11 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
  *
  * @return {Element} Element to render.
  */
-export default function save() {
+export default function save(props) {
+	const {attributes} = props
+	const stringifedAttributes = JSON.stringify(attributes)
 	return (
-		<div { ...useBlockProps.save() }>
+		<div data-autocomplete-attributes={stringifedAttributes} { ...useBlockProps.save() }>
 			<InnerBlocks.Content />
 		</div>
 	);

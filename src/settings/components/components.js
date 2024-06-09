@@ -100,12 +100,12 @@ const ConnectionInfo = ({ connectionInfo }) => {
             <span>Connection Status: </span>
             {connectionInfo.status ? (
                 <span className='yuto__connection-info__status success'>
-                    <span>Connected </span>
+                    <span>{__('Connected', 'yuto')}</span>
                 </span>
             ) : (
                 <span>
                     <span className='yuto__connection-info__status error'>
-                        <span>Disconnected </span>
+                        <span>{__('Disconnected', 'yuto')}</span>
                     </span>
                 </span>
             )}
@@ -113,7 +113,7 @@ const ConnectionInfo = ({ connectionInfo }) => {
     );
 };
 
-const APIKeyCard = (settingsProps) => {
+const APIKeyCard = (yutoSettingsProps) => {
     const {
         hostURL,
         setHostURL,
@@ -121,10 +121,10 @@ const APIKeyCard = (settingsProps) => {
         setAPIKey,
         connectMeilisearch,
         connectionInfo,
-    } = settingsProps
+    } = yutoSettingsProps
     return (
-        <Card 
-        size="medium"
+        <Card
+            size="medium"
         >
             <CardHeader>
                 <Heading level={3}>{__('Connection', 'yuto')}</Heading>
@@ -133,8 +133,8 @@ const APIKeyCard = (settingsProps) => {
             <CardBody>
                 <Flex align="start" justify="normal" gap="12">
                     <FlexBlock style={{ flexBasis: "20%" }}>
-                        <h2>Configuration</h2>
-                        <p>Configure the connection between your site and Meilisearch. <a href="https://www.meilisearch.com/docs/learn/security/basic_security" target='_blank'>Get API keys</a></p></FlexBlock>
+                        <h2>{__('Configuration', 'yuto')}</h2>
+                        <p>{__('Configure the connection between your site and Meilisearch. ', 'yuto')}<a href="https://www.meilisearch.com/docs/learn/security/basic_security" target='_blank'>{__('Get API keys', 'yuto')}</a></p></FlexBlock>
                     <FlexBlock style={{ flexBasis: "80%" }}>
                         <HostURLControl
                             value={hostURL}
@@ -155,14 +155,14 @@ const APIKeyCard = (settingsProps) => {
     )
 }
 
-const IndexesCard = (settingsProps) => {
+const IndicesCard = (yutoSettingsProps) => {
     const {
         connectionInfo,
         meilisearchClient,
         UIDs,
         setUIDs,
         updateUIDs
-    } = settingsProps
+    } = yutoSettingsProps
     if (!UIDs) {
         return <Spinner />
     }
@@ -203,21 +203,21 @@ const IndexesCard = (settingsProps) => {
     return (
         <Card>
             <CardHeader>
-                <Heading level={3}>{__('Indexes', 'yuto')}</Heading>
+                <Heading level={3}>{__('Indices', 'yuto')}</Heading>
             </CardHeader>
             {connectionInfo.status ? (
                 <>
                     <CardBody>
-                        Each index is a collection of documents, similar to a table in a relational database. Here, <b>Posts</b> & <b>Pages</b> are indexes and each posts & pages are the documents.<a href='https://www.meilisearch.com/docs/learn/core_concepts/indexes' target='_blank'>Learn more.</a>
+                        {__('Each index is a collection of documents, similar to a table in a relational database. Here, Posts & Pages are indexes and each posts & pages are the documents.', 'yuto')} <a href='https://www.meilisearch.com/docs/learn/core_concepts/indexes' target='_blank'>{__('Learn more.', 'yuto')}</a>
                     </CardBody>
                     <CardBody>
                         <Flex align="start" justify="normal" gap="12">
                             <FlexBlock style={{ flexBasis: "20%" }}>
-                                <h2>Configuration</h2>
-                                <p>Configure <a target='_blank' href='https://www.meilisearch.com/docs/learn/core_concepts/indexes#index-uid'>UID (unique identifier)</a> for each index and add documents to each index.</p></FlexBlock>
+                                <h2>{__('Configuration', 'yuto')}</h2>
+                                <p>{__('Configure', 'yuto')} <a target='_blank' href='https://www.meilisearch.com/docs/learn/core_concepts/indexes#index-uid'>{__('UID (unique identifier)', 'yuto')}</a> {__('for each index and add documents to each index.', 'yuto')}</p></FlexBlock>
                             <FlexBlock style={{ flexBasis: "80%" }}>
-                                <Panel header="Indexes">
-                                    <PanelBody title="Posts" icon={<Dashicon icon="admin-post" />} >
+                                <Panel header={__('Indices', 'yuto')}>
+                                    <PanelBody title={__('Posts', 'yuto')} icon={<Dashicon icon="admin-post" />} >
                                         <IndexUIDControl
                                             placeholder="post"
                                             value={UIDs[0]}
@@ -233,7 +233,7 @@ const IndexesCard = (settingsProps) => {
                                             <DeleteIndexButton onClick={() => deleteIndexButtonClick(UIDs[0])} />
                                         </Flex>
                                     </PanelBody>
-                                    <PanelBody title="Pages" icon={<Dashicon icon="admin-page" />} initialOpen={false}>
+                                    <PanelBody title={__('Pages', 'yuto')} icon={<Dashicon icon="admin-page" />} initialOpen={false}>
                                         <IndexUIDControl
                                             placeholder="page"
                                             value={UIDs[1]}
@@ -256,7 +256,7 @@ const IndexesCard = (settingsProps) => {
                 </>
             ) : (
                 <CardBody>
-                    <p><Dashicon style={{ color: "red" }} icon="dismiss" /> Error loading indexes: {connectionInfo.error}</p>
+                    <p><Dashicon style={{ color: "red" }} icon="dismiss" />{__('Error loading indexes: ', 'yuto') + connectionInfo.error}</p>
                 </CardBody>
             )}
 
@@ -264,16 +264,16 @@ const IndexesCard = (settingsProps) => {
     )
 }
 
-const TabPanelItems = ({ tab, ...settingsProps }) => {
+const TabPanelItems = ({ tab, ...yutoSettingsProps }) => {
     if (tab.name === 'connection') {
-        return <APIKeyCard {...settingsProps} />
+        return <APIKeyCard {...yutoSettingsProps} />
     } else {
-        return <IndexesCard {...settingsProps} />
+        return <IndicesCard {...yutoSettingsProps} />
     }
 };
 
 const SettingsTabPanel = () => {
-    const settingsProps = useSettings();
+    const yutoSettingsProps = useSettings();
 
     return (
         <TabPanel
@@ -286,13 +286,13 @@ const SettingsTabPanel = () => {
                 },
                 {
                     name: 'indexes',
-                    title: __('Indexes', 'yuto'),
+                    title: __('Indices', 'yuto'),
                 },
             ]}
         >
             {
                 (tab) => (
-                    <TabPanelItems tab={tab} {...settingsProps} />
+                    <TabPanelItems tab={tab} {...yutoSettingsProps} />
                 )
             }
         </TabPanel>

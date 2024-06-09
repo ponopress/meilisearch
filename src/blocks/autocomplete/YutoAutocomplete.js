@@ -1,34 +1,39 @@
-import { autocomplete } from '@algolia/autocomplete-js';
+import { autocomplete, getAlgoliaResults } from '@algolia/autocomplete-js';
 import { getMeilisearchResults } from '@meilisearch/autocomplete-client';
 import { useSettings } from '../../hooks';
-import { Spinner } from '@wordpress/components';
+import { Spinner, Notice } from '@wordpress/components';
 import { useEffect, useRef } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
-const YutoAutocomplete = () => {
-    const { searchClient } = useSettings();
+const YutoAutocomplete = ({ attributes }) => {
+    const { autocompleteSearchClient } = useSettings();
+    
     const containerRef = useRef(null);
+    const { enabledIndices } = attributes
 
     useEffect(() => {
-        if (!searchClient || !containerRef.current) {
+        if (!autocompleteSearchClient || !containerRef.current) {
             return;
         }
 
+        // It's being reassigned because `getMeilisearchResults` is not working with any 
+        // other variable name othar than `searchClient`. Need to look into this.
+        const searchClient = autocompleteSearchClient
         const autocompleteInstance = autocomplete({
             container: containerRef.current,
-            placeholder: 'Search for games',
+            placeholder: __('Search for games', 'yuto'),
             getSources({ query }) {
                 return [
                     {
                         sourceId: 'posts',
                         getItems() {
+                            const queries = enabledIndices.map(indexName => ({
+                                indexName,
+                                query,
+                            }));
                             return getMeilisearchResults({
                                 searchClient,
-                                queries: [
-                                    {
-                                        indexName: 'posts',
-                                        query,
-                                    },
-                                ],
+                                queries: queries,
                             });
                         },
                         templates: {
@@ -38,7 +43,7 @@ const YutoAutocomplete = () => {
                                 </div>`;
                             },
                         },
-                    },
+                    }
                 ];
             },
         });
@@ -47,13 +52,13 @@ const YutoAutocomplete = () => {
         return () => {
             autocompleteInstance.destroy();
         };
-    }, [searchClient]);
+    }, [autocompleteSearchClient, enabledIndices]);
 
-    if (!searchClient) {
+    if (!autocompleteSearchClient) {
         return <Spinner />;
     }
 
-    return <div ref={containerRef}></div>;
+    return <div className='wp-block-yuto-meilisearch__autocomplete-container' ref={containerRef}></div>;
 };
 
 export default YutoAutocomplete;
