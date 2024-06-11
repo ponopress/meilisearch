@@ -17,6 +17,7 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 export default function save(props) {
 	const {attributes} = props
 	const stringifedAttributes = JSON.stringify(attributes)
+	
 	return (
 		<div data-autocomplete-attributes={stringifedAttributes} { ...useBlockProps.save() }>
 			<InnerBlocks.Content />

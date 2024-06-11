@@ -4,12 +4,26 @@ import { useSettings } from '../../hooks';
 import { Spinner, Notice } from '@wordpress/components';
 import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import {
+    meilisearchAutocompleteClient,
+} from '@meilisearch/autocomplete-client'
 
 const YutoAutocomplete = ({ attributes }) => {
-    const { autocompleteSearchClient } = useSettings();
+    let autocompleteSearchClient;
+    // Checking `yutoViewData` since it is available only if called from frontend
+    // So that the `autocompleteSearchClient` gets created based on the call from frontend or admin
+    if ('undefined' === typeof yutoViewData) {
+        let { autocompleteSearchClientFromSetting } = useSettings();
+        autocompleteSearchClient = autocompleteSearchClientFromSetting;
+    } else {
+        autocompleteSearchClient = meilisearchAutocompleteClient({
+            url: yutoViewData.host, // Host
+            apiKey: yutoViewData.searchAPIKey  // API key
+        })
+    }
     
     const containerRef = useRef(null);
-    const { enabledIndices } = attributes
+    const { enabledIndices, placeholder } = attributes
 
     useEffect(() => {
         if (!autocompleteSearchClient || !containerRef.current) {
@@ -21,7 +35,7 @@ const YutoAutocomplete = ({ attributes }) => {
         const searchClient = autocompleteSearchClient
         const autocompleteInstance = autocomplete({
             container: containerRef.current,
-            placeholder: __('Search for games', 'yuto'),
+            placeholder: placeholder,
             getSources({ query }) {
                 return [
                     {
@@ -38,6 +52,7 @@ const YutoAutocomplete = ({ attributes }) => {
                         },
                         templates: {
                             item({ item, components, html }) {
+                                console.log(item,components, html)
                                 return html`<div>
                                     <div>${item.title}</div>
                                 </div>`;
@@ -52,7 +67,7 @@ const YutoAutocomplete = ({ attributes }) => {
         return () => {
             autocompleteInstance.destroy();
         };
-    }, [autocompleteSearchClient, enabledIndices]);
+    }, [autocompleteSearchClient, attributes]);
 
     if (!autocompleteSearchClient) {
         return <Spinner />;

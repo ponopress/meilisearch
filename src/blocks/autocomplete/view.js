@@ -22,8 +22,9 @@
 import { render, Suspense } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
 import YutoAutocomplete from './YutoAutocomplete'
+import domReady from '@wordpress/dom-ready'
 
-window.addEventListener('DOMContentLoaded', () => {
+domReady( function() {
 	const elements = document.querySelectorAll(
 		'.wp-block-yuto-meilisearch'
 	);

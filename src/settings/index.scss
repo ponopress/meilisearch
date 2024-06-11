@@ -5,9 +5,15 @@
         margin-bottom: 30px;
         font-weight: bold;
     }
+    input,
+    button,
+    .components-card,
+    .components-panel {
+        border-radius: 4px;
+    }
+    .yuto {
 
-    .yuto__ {
-        &settings-tab-panel {
+        &__settings-tab-panel {
             display: flex;
             gap: 5%;
 
@@ -28,7 +34,7 @@
             }
         }
 
-        &connection-info {
+        &__connection-info {
             &__status {
                 padding: 5px 10px;
                 border-radius: 15px;

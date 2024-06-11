@@ -15,3 +15,15 @@ function meilisearch_block_init() {
 	register_block_type( YUTO_ABSPATH . 'build/blocks/autocomplete' );
 }
 add_action( 'init', 'meilisearch_block_init' );
+
+// Enqueue your script
+function enqueue_my_script() {
+	$yuto_settings = get_option('yuto_settings'); 
+	// Passing searchKey from localization since it's saved on `options` table
+	// and apiFetch for data there can't be done for logged out user.
+    wp_localize_script('yuto-meilisearch-view-script', 'yutoViewData', array(
+        'searchAPIKey' => $yuto_settings['searchAPIKey'],
+        'host' => $yuto_settings['hostURL']
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_my_script');

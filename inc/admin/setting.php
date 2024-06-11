@@ -78,22 +78,24 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' 
 function register_settings() {
     $default = array(
         'hostURL' => '',
-        'APIKey' => '',
+        'searchAPIKey' => '',
+        'masterAPIKey' => '',
+        'adminAPIKey' => '',
         'defaultPostTypesUIDs' => array('post', 'page')
     );
     $schema  = array(
         'type'       => 'object',
         'properties' => array(
-            'message' => array(
+            'searchAPIKey' => array(
                 'type' => 'string',
             ),
-            'display' => array(
-                'type' => 'boolean',
+            'adminAPIKey' => array(
+                'type' => 'string',
             ),
             'hostURL' => array(
                 'type' => 'string',
             ),
-            'APIKey' => array(
+            'masterAPIKey' => array(
                 'type' => 'string',
             ),
             'defaultPostTypesUIDs' => array(

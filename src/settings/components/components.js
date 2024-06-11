@@ -36,7 +36,7 @@ const HostURLControl = ({ value, onChange }) => {
     );
 };
 
-const APIKeyControl = ({ value, onChange }) => {
+const MasterAPIKeyControl = ({ value, onChange }) => {
     return (
         <TextControl
             label={__('API Key', 'yuto')}
@@ -113,12 +113,12 @@ const ConnectionInfo = ({ connectionInfo }) => {
     );
 };
 
-const APIKeyCard = (yutoSettingsProps) => {
+const MasterAPIKeyCard = (yutoSettingsProps) => {
     const {
         hostURL,
         setHostURL,
-        APIKey,
-        setAPIKey,
+        masterAPIKey,
+        setMasterAPIKey,
         connectMeilisearch,
         connectionInfo,
     } = yutoSettingsProps
@@ -140,9 +140,9 @@ const APIKeyCard = (yutoSettingsProps) => {
                             value={hostURL}
                             onChange={(value) => setHostURL(value)}
                         />
-                        <APIKeyControl
-                            value={APIKey}
-                            onChange={(value) => setAPIKey(value)}
+                        <MasterAPIKeyControl
+                            value={masterAPIKey}
+                            onChange={(value) => setMasterAPIKey(value)}
                         />
 
                     </FlexBlock>
@@ -266,7 +266,7 @@ const IndicesCard = (yutoSettingsProps) => {
 
 const TabPanelItems = ({ tab, ...yutoSettingsProps }) => {
     if (tab.name === 'connection') {
-        return <APIKeyCard {...yutoSettingsProps} />
+        return <MasterAPIKeyCard {...yutoSettingsProps} />
     } else {
         return <IndicesCard {...yutoSettingsProps} />
     }

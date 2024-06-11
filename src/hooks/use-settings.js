@@ -9,22 +9,23 @@ import {
 } from '@meilisearch/autocomplete-client'
 
 const useSettings = () => {
-    const [message, setMessage] = useState('Hello, World!');
-    const [display, setDisplay] = useState(true);
     const [hostURL, setHostURL] = useState('');
-    const [APIKey, setAPIKey] = useState('');
+    const [masterAPIKey, setMasterAPIKey] = useState('');
+    const [searchAPIKey, setSearchAPIKey] = useState('');
+    const [adminAPIKey, setAdminAPIKey] = useState('');
     const [meilisearchClient, setMeiliesearchClient] = useState('');
-    const [autocompleteSearchClient, setAutocompleteSearchClient] = useState(false);
+    const [autocompleteSearchClientFromSetting, setAutocompleteSearchClient] = useState(false);
     const [connectionInfo, setConnectionInfo] = useState({
         status: false,
         error: null,
     });
     const [selectedTab, setSelectedTab] = useState('');
-    const [UIDs, setUIDs] = useState();
+    const [UIDs, setUIDs] = useState(['post', 'page']);
 
     let yutoSettings = {
         hostURL,
-        APIKey,
+        masterAPIKey,
+        searchAPIKey,
         defaultPostTypesUIDs: UIDs
     }
 
@@ -33,32 +34,32 @@ const useSettings = () => {
         console.log('api fetching')
         apiFetch({ path: '/wp/v2/settings' }).then((settings) => {
             if (settings.yuto_settings) {
-                setMessage(settings.yuto_settings.message);
-                setDisplay(settings.yuto_settings.display);
                 setHostURL(settings.yuto_settings.hostURL);
-                setAPIKey(settings.yuto_settings.APIKey);
+                setMasterAPIKey(settings.yuto_settings.masterAPIKey);
+                setSearchAPIKey(settings.yuto_settings.searchAPIKey);
+                setAdminAPIKey(settings.yuto_settings.adminAPIKey);
                 setUIDs(settings.yuto_settings.defaultPostTypesUIDs);
             }
 
-            createMeiliesearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.APIKey)
-            createAutocompleteSearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.APIKey)
+            createMeiliesearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.masterAPIKey)
+            createAutocompleteSearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.masterAPIKey)
         })
     }, [])
 
-    const createAutocompleteSearchClient = (host, APIKey) => {
+    const createAutocompleteSearchClient = (host, masterAPIKey) => {
         const searchClient = meilisearchAutocompleteClient({
             url: host, // Host
-            apiKey: APIKey  // API key
+            apiKey: masterAPIKey  // API key
         })
         setAutocompleteSearchClient(searchClient)
     }
 
-    const createMeiliesearchClient = (host, APIKey, onFailNotice, onSuccessNotice) => {
+    const createMeiliesearchClient = (host, masterAPIKey, onFailNotice, onSuccessNotice) => {
         let client
         try {
             client = new MeiliSearch({
                 host: host,
-                apiKey: APIKey
+                apiKey: masterAPIKey
             });
         } catch (error) {
             console.log('fail')
@@ -84,6 +85,7 @@ const useSettings = () => {
 
     const checkConnectionStatus = (client, onFailNotice, onSuccessNotice) => {
         console.log('connection checking')
+
         if (client) {
             client.getVersion()
                 .then(() => {
@@ -102,6 +104,11 @@ const useSettings = () => {
                     });
                     onFailNotice && onFailNotice(error.message)
                 });
+            client.getKeys()
+                .then((keys) => {
+                    setSearchAPIKey(keys.results[0].key)
+                    setAdminAPIKey(keys.results[1].key)
+                })
         }
     }
 
@@ -115,11 +122,13 @@ const useSettings = () => {
                 yuto_settings: {
                     ...yutoSettings,
                     hostURL,
-                    APIKey,
+                    masterAPIKey,
+                    searchAPIKey,
+                    adminAPIKey
                 },
             },
         }).then(() => {
-            createMeiliesearchClient(hostURL, APIKey, onFailNotice, onSuccessNotice)
+            createMeiliesearchClient(hostURL, masterAPIKey, onFailNotice, onSuccessNotice)
         })
     };
 
@@ -139,14 +148,10 @@ const useSettings = () => {
     }
 
     return {
-        message,
-        setMessage,
-        display,
-        setDisplay,
         hostURL,
         setHostURL,
-        APIKey,
-        setAPIKey,
+        masterAPIKey,
+        setMasterAPIKey,
         meilisearchClient,
         connectionInfo,
         selectedTab,
@@ -154,8 +159,10 @@ const useSettings = () => {
         connectMeilisearch,
         updateUIDs,
         UIDs,
+        searchAPIKey,
+        adminAPIKey,
         setUIDs,
-        autocompleteSearchClient
+        autocompleteSearchClientFromSetting
     };
 };
 

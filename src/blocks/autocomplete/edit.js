@@ -32,10 +32,7 @@ import InspectorSettings from './inspector-settings';
  */
 export default function Edit(props) {
 	const {attributes} = props
-	const blockProps = useBlockProps( {
-		dataset: 'nepal',
-		className: 'hello'
-	} );
+	const blockProps = useBlockProps()
 
 	return (
 		<div {...blockProps}>
