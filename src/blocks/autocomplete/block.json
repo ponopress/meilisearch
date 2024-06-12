@@ -23,6 +23,14 @@
 		"placeholder": {
             "type": "string",
 			"default": "Search..."
+        },
+		"autoFocus": {
+            "type": "boolean",
+			"default": false
+        },
+		"openOnFocus": {
+            "type": "boolean",
+			"default": false
         }
 	}
 }

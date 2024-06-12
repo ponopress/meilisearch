@@ -23,7 +23,7 @@ const YutoAutocomplete = ({ attributes }) => {
     }
     
     const containerRef = useRef(null);
-    const { enabledIndices, placeholder } = attributes
+    const { enabledIndices, placeholder, autoFocus } = attributes
 
     useEffect(() => {
         if (!autocompleteSearchClient || !containerRef.current) {
@@ -36,6 +36,8 @@ const YutoAutocomplete = ({ attributes }) => {
         const autocompleteInstance = autocomplete({
             container: containerRef.current,
             placeholder: placeholder,
+            autoFocus: autoFocus,
+            openOnFocus: true,
             getSources({ query }) {
                 return [
                     {

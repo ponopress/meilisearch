@@ -4,14 +4,15 @@ import {
 	PanelBody,
 	PanelRow,
 	TextControl,
-	FormTokenField
+	FormTokenField,
+	ToggleControl
 } from '@wordpress/components';
 
 export default function Settings(props) {
 	const { UIDs } = props.yutoSettingProps
 
 	const { attributes, setAttributes } = props
-	const { enabledIndices, placeholder } = attributes
+	const { enabledIndices, placeholder, autoFocus, openOnFocus } = attributes
 	const suggestions = UIDs;
 
 	return (
@@ -37,9 +38,28 @@ export default function Settings(props) {
 						value={placeholder}
 						onChange={(value) => setAttributes({ placeholder: value })}
 					/>
+
+					<ToggleControl
+						label={__("Auto Focus", 'yuto')}
+						help={__("Enabling will focus on the search box on page load", 'yuto')}
+						checked={autoFocus}
+						onChange={(value) => {
+							setAttributes({ autoFocus: value });
+						}}
+					/>
+
+					<ToggleControl
+						label={__("Open on Focus", 'yuto')}
+						help={__("Display items as soon as a user selects the search, even without typing.", 'yuto')}
+						checked={openOnFocus}
+						onChange={(value) => {
+							setAttributes({ openOnFocus: value });
+						}}
+					/>
 				</PanelBody>
+
 				<PanelBody title={__('Placeholder', 'yuto')}>
-					
+
 				</PanelBody>
 			</Panel>
 		</>
