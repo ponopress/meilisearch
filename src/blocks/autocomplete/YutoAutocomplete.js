@@ -7,6 +7,11 @@ import { __ } from '@wordpress/i18n';
 import {
     meilisearchAutocompleteClient,
 } from '@meilisearch/autocomplete-client'
+import { defaultHooks } from '@wordpress/hooks';
+
+const Test = () => {
+    return 'hello'
+}
 
 const YutoAutocomplete = ({ attributes }) => {
     let autocompleteSearchClient;
@@ -21,7 +26,7 @@ const YutoAutocomplete = ({ attributes }) => {
             apiKey: yutoViewData.searchAPIKey  // API key
         })
     }
-    
+
     const containerRef = useRef(null);
     const { enabledIndices, placeholder, autoFocus } = attributes
 
@@ -39,30 +44,60 @@ const YutoAutocomplete = ({ attributes }) => {
             autoFocus: autoFocus,
             openOnFocus: true,
             getSources({ query }) {
-                return [
-                    {
-                        sourceId: 'posts',
-                        getItems() {
-                            const queries = enabledIndices.map(indexName => ({
-                                indexName,
-                                query,
-                            }));
-                            return getMeilisearchResults({
-                                searchClient,
-                                queries: queries,
+                return enabledIndices.map(indexName => ({
+                    sourceId: indexName,
+                    getItems() {
+                        return getMeilisearchResults({
+                            searchClient,
+                            queries: [
+                                {
+                                    indexName,
+                                    query,
+                                },
+                            ],
+                        });
+                    },
+                    getItemUrl({ item }) {
+                        return item.link;
+                    },
+                    templates: {
+                        header(props) {
+                            const { createElement } = props;
+                            let headerTemplate = defaultHooks.applyFilters(`yuto_autocomplete_${indexName}_header_template`, `<b>${indexName}</b>`, props);
+                            return createElement('div', {
+                                dangerouslySetInnerHTML: { __html: headerTemplate }
                             });
                         },
-                        templates: {
-                            item({ item, components, html }) {
-                                console.log(item,components, html)
-                                return html`<div>
-                                    <div>${item.title}</div>
-                                </div>`;
-                            },
+                        item(props) {
+                            const { item, components, html, createElement } = props;
+                            let defaultItemTemplate = `<a class="aa-ItemLink" href="${item.link}">${item.title}</a>`;
+                            let itemTemplate = defaultHooks.applyFilters(`yuto_autocomplete_${indexName}_item_template`, defaultItemTemplate, props);
+                            return createElement('span', {
+                                dangerouslySetInnerHTML: { __html: itemTemplate }
+                            });
                         },
-                    }
-                ];
-            },
+                        footer(props) {
+                            const { createElement } = props;
+                            let footerTemplate = defaultHooks.applyFilters(`yuto_autocomplete_${indexName}_footer_template`, ``, props);
+                            return createElement('div', {
+                                dangerouslySetInnerHTML: { __html: footerTemplate }
+                            });
+                        },
+                        noResults(props) {
+                            const { createElement } = props;
+                            let noResultsTemplate = defaultHooks.applyFilters(
+                                `yuto_autocomplete_${indexName}_noResults_template`,
+                                `<i>${__(`No ${indexName} found!!!`)}</i>`,
+                                props
+                            );
+                            return createElement('div', {
+                                dangerouslySetInnerHTML: { __html: noResultsTemplate }
+                            });
+                        },
+                    },
+                }));
+            }
+
         });
 
         // Clean up the autocomplete instance on unmount
