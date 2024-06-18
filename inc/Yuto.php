@@ -3,7 +3,7 @@
  * Setup Yuto
  *
  * @package yuto
- * @since   1.0.0
+ * @since   0.0.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -11,14 +11,14 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Main Yuto Class.
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 final class Yuto {
 
 	/**
 	 * Return singleton instance of the Yuto plugin.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 * @return Yuto
 	 */
 	public static function instance() {
@@ -33,7 +33,7 @@ final class Yuto {
 	/**
 	 * Cloning instances of the class is forbidden.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	public function __clone() {
 		_doing_it_wrong(
@@ -46,7 +46,7 @@ final class Yuto {
 	/**
 	 * Unserializing instances of the class is forbidden.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	public function __wakeup() {
 		_doing_it_wrong(
@@ -68,7 +68,7 @@ final class Yuto {
 	/**
 	 * Load required actions.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	public function actions() {
 	}
@@ -76,7 +76,7 @@ final class Yuto {
 	/**
 	 * Include required files.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	public function includes() {
 		include_once YUTO_ABSPATH . 'inc/block.php';

@@ -1,16 +1,16 @@
 <?php
 /**
- * Plugin Name:       Yuto
- * Plugin URI:        https://ponopress.com/plugins/meilisearch
- * Description:       WordPress plugin for Meilisearch integration
+ * Plugin Name:       Yuto - Meilisearch Integrator
+ * Plugin URI:        https://ponopress.com/plugins/yuto
+ * Description:       Turbocharge your website search with lightning-fast and hyper-relevant Meilisearch search engine 
  * Requires at least: 6.3
  * Requires PHP:      7.0
  * Version:           0.0.1
  * Author:            ponopress
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       meilisearch
- * Domain Path:       meilisearch
+ * Text Domain:       yuto
+ * Domain Path:       yuto
  *
  * @package           pono-press
  */
@@ -31,9 +31,9 @@
   * @since 1.0.0
   * @return object|Yuto
   */
- function meilisearch_load_plugin() {
+ function yuto_load_plugin() {
 	 return Yuto::instance();
  }
  
  // Get the plugin running.
- add_action( 'plugins_loaded', 'meilisearch_load_plugin' );
+ add_action( 'plugins_loaded', 'yuto_load_plugin' );

@@ -11,19 +11,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
-function meilisearch_block_init() {
+function yuto_block_init() {
 	register_block_type( YUTO_ABSPATH . 'build/blocks/autocomplete' );
 }
-add_action( 'init', 'meilisearch_block_init' );
+add_action( 'init', 'yuto_block_init' );
 
 // Enqueue your script
-function enqueue_my_script() {
+function yuto_enqueue_script() {
 	$yuto_settings = get_option('yuto_settings'); 
 	// Passing searchKey from localization since it's saved on `options` table
 	// and apiFetch for data there can't be done for logged out user.
     wp_localize_script('yuto-meilisearch-view-script', 'yutoViewData', array(
         'searchAPIKey' => $yuto_settings['searchAPIKey'],
-        'host' => $yuto_settings['hostURL']
+        'host' => esc_url( $yuto_settings['hostURL'] )
     ));
 }
-add_action('wp_enqueue_scripts', 'enqueue_my_script');
+add_action('wp_enqueue_scripts', 'yuto_enqueue_script');
