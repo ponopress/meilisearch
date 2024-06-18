@@ -1,6 +1,5 @@
 === Yuto - Meilisearch Integrator ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://example.com/
+Contributors: ponopress
 Tags: search, better search, meilisearch, yuto
 Requires at least: 6.3
 Tested up to: 6.5
