@@ -2,9 +2,9 @@
 Contributors: ponopress
 Tags: search, better search, meilisearch, yuto
 Requires at least: 6.3
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 0.0.1
+Stable tag: 0.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,25 @@ Turbocharge your website search with lightning-fast and hyper-relevant Meilisear
 == Description ==
 Meilisearch is an open-source, blazing-fast, and feature-rich search engine. It's designed to deliver instant search results to your websites with high relevance and speed.⚡️🔎
 
-Yuto seamlessly integrates the powerful Meilisearch engine into your website, unlocking lightning-fast search capabilities with hyper-relevant results. With Yuto, your users can enjoy instant search responses, typo-tolerance, customizable ranking rules, and faceted search features provided by Meilisearch. Boost user retention and satisfaction on your website with enhanced search capabilities..
+[Yuto](https://ponopress.com/plugins/yuto/) seamlessly integrates the powerful Meilisearch engine into your website, unlocking lightning-fast search capabilities with hyper-relevant results. With Yuto, your users can enjoy instant search responses, typo-tolerance, customizable ranking rules, and faceted search features provided by Meilisearch. Boost user retention and satisfaction on your website with enhanced search capabilities.
+
+**Lightning-Fast Search ⚡️🔎:** Meilisearch is built to deliver near-instantaneous search results, offering a responsive and efficient search experience.
+
+**Full-Text Search:** Yuto supports advanced full-text search capabilities, including typo tolerance, synonyms, and language support, ensuring users find relevant results even with minor errors or variations in queries.
+
+**Faceted Search:** It supports faceted search, enabling users to filter search results by categories, tags, or other attributes, enhancing the search experience with more precise results.
+
+**Site Editor Blocks:** Yuto is fully compatible with the new Site Editor, offering an Autocomplete Search block for seamless integration and intuitive use. Additional blocks will be available soon.
+
+**Support and Continuous Development**
+
+Reliable support to promptly addressing any issues you encounter. 
+
+Have an idea for more feature? Let us know in the plugin support forum.
+
+[Juno Usage Guide](https://ponopress.com/guides/yuto/)
+
+[Support Forum](https://wordpress.org/support/plugin/yuto/)
 
 == Installation ==
 
@@ -39,6 +57,11 @@ Here are the detailed instructions to manually install a WordPress plugin by tra
 The WordPress codex contains [instructions on how to do this here](https://wordpress.org/documentation/article/manage-plugins/#finding-and-installing-plugins-1).
 
 == Changelog ==
+
+= 0.0.2 =
+* Update readme file
+* Add settings link and other row meta links
+* Change block icons
 
 = 0.0.1 =
 * Initial release

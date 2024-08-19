@@ -9,10 +9,6 @@ import {
 } from '@meilisearch/autocomplete-client'
 import { defaultHooks } from '@wordpress/hooks';
 
-const Test = () => {
-    return 'hello'
-}
-
 const YutoAutocomplete = ({ attributes }) => {
     let autocompleteSearchClient;
     // Checking `yutoViewData` since it is available only if called from frontend

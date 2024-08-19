@@ -81,6 +81,11 @@ final class Yuto {
 	public function includes() {
 		include_once YUTO_ABSPATH . 'inc/block.php';
 		include_once YUTO_ABSPATH . 'inc/admin/setting.php';
+
+		// Only include in the admin.
+		if ( is_admin() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			include_once YUTO_ABSPATH . 'inc/admin/plugin-action-links.php';
+		}
 	}
 
 	/**
@@ -93,6 +98,7 @@ final class Yuto {
 		$this->define( 'YUTO_VERSION', get_file_data( YUTO_PLUGIN_FILE, [ 'Version' ] )[0] ); // phpcs:ignore
 		$this->define( 'YUTO_PLUGIN_URL', plugin_dir_url( YUTO_PLUGIN_FILE ) );
 		$this->define( 'YUTO_PLUGIN_BASENAME', plugin_basename( YUTO_PLUGIN_FILE ) );
+		$this->define( 'YUTO_SETTINGS_URL', admin_url( 'admin.php?page=yuto-settings' ) );
 	}
 
 	/**

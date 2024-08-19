@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Autocomplete Search",
 	"category": "widgets",
-	"icon": "smiley",
+	"icon": "search",
 	"description": "Yuto - Meilisearch Autocomplete.",
 	"example": {},
 	"supports": {
