@@ -57,10 +57,6 @@ export default function Settings(props) {
 						}}
 					/>
 				</PanelBody>
-
-				<PanelBody title={__('Placeholder', 'yuto')}>
-
-				</PanelBody>
 			</Panel>
 		</>
 	)

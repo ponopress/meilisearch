@@ -55,7 +55,7 @@ const IndexUIDControl = ({ value, onChange, placeholder }) => {
             value={value}
             onChange={onChange}
             type="text"
-            help={__('Enter uniuqe identifier for index.  Must be an integer or string containing only alphanumeric characters, hyphens and underscores. By default, it\'s value is the slug', 'yuto')}
+            help={__('Enter unique identifier for index.  Must be an integer or string containing only alphanumeric characters, hyphens and underscores. By default, it\'s value is the slug', 'yuto')}
             placeholder={placeholder}
         />
     );
@@ -166,6 +166,28 @@ const IndicesCard = (yutoSettingsProps) => {
     if (!UIDs) {
         return <Spinner />
     }
+
+    const getFeaturedMediaURL = async (id) => {
+        try {
+            // If post has featured image it should be greater than 0
+            if (id > 0) {
+
+                // Use  to get the media object
+                const media = await apiFetch({ path: `/wp/v2/media/${id}` });
+
+                // Extract the image URL (full size)
+                const imageURL = media.source_url;
+
+                return imageURL;
+            } else {
+                return null
+            }
+        } catch (error) {
+            console.error('Error fetching the media:', error);
+            return null;
+        }
+    };
+
     const { createSuccessNotice, createErrorNotice } = useDispatch(noticesStore);
     const addDocumentsButtonClick = (postType, UID) => {
         updateUIDs()
@@ -177,7 +199,7 @@ const IndicesCard = (yutoSettingsProps) => {
                 return {
                     id: post.id,
                     title: post.title.rendered,
-                    link: post.link
+                    featured_media_url: getFeaturedMediaURL(post.featured_media)
                 };
             });
             meilisearchClient.index(UID).addDocuments(postObjects)

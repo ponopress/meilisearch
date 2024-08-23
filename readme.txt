@@ -29,7 +29,7 @@ Reliable support to promptly addressing any issues you encounter.
 
 Have an idea for more feature? Let us know in the plugin support forum.
 
-[Juno Usage Guide](https://ponopress.com/guides/yuto/)
+[Yuto Usage Guide](https://ponopress.com/guides/yuto/)
 
 [Support Forum](https://wordpress.org/support/plugin/yuto/)
 
@@ -62,6 +62,7 @@ The WordPress codex contains [instructions on how to do this here](https://wordp
 * Update readme file
 * Add settings link and other row meta links
 * Change block icons
+* Add `uninstall.php` to delete options on plugin deletion
 
 = 0.0.1 =
 * Initial release
