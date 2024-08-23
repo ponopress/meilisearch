@@ -5,14 +5,15 @@ import {
 	PanelRow,
 	TextControl,
 	FormTokenField,
-	ToggleControl
+	ToggleControl,
+	SelectControl
 } from '@wordpress/components';
 
 export default function Settings(props) {
 	const { UIDs } = props.yutoSettingProps
 
 	const { attributes, setAttributes } = props
-	const { enabledIndices, placeholder, autoFocus, openOnFocus } = attributes
+	const { enabledIndices, placeholder, autoFocus, openOnFocus, resultsPanelPlacement } = attributes
 	const suggestions = UIDs;
 
 	return (
@@ -55,6 +56,21 @@ export default function Settings(props) {
 						onChange={(value) => {
 							setAttributes({ openOnFocus: value });
 						}}
+					/>
+					<SelectControl
+						label={__("Results Panel Placement", 'yuto')}
+						value={resultsPanelPlacement}
+						options={[
+							{ label: __('Search Input Width', 'yuto'), value: 'input-wrapper-width' },
+							{ label: __('Start', 'yuto'), value: 'start' },
+							{ label: __('End', 'yuto'), value: 'end' },
+							{ label: __('Full Width', 'yuto'), value: 'full-width' },
+						]}
+						help={__("Select the positioning of the results panel when a search is performed.", 'yuto')}
+						onChange={(value) => {
+							setAttributes({ resultsPanelPlacement: value });
+						}}
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</Panel>

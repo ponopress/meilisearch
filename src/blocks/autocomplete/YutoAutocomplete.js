@@ -24,7 +24,7 @@ const YutoAutocomplete = ({ attributes }) => {
     }
 
     const containerRef = useRef(null);
-    const { enabledIndices, placeholder, autoFocus, openOnFocus } = attributes
+    const { enabledIndices, placeholder, autoFocus, openOnFocus, resultsPanelPlacement } = attributes
 
     useEffect(() => {
         if (!autocompleteSearchClient || !containerRef.current) {
@@ -38,6 +38,7 @@ const YutoAutocomplete = ({ attributes }) => {
             container: containerRef.current,
             placeholder: placeholder,
             autoFocus: autoFocus,
+            panelPlacement: resultsPanelPlacement,
             openOnFocus: openOnFocus,
             getSources({ query }) {
                 return enabledIndices.map(indexName => ({
@@ -66,10 +67,23 @@ const YutoAutocomplete = ({ attributes }) => {
                         },
                         item(props) {
                             const { item, components, html, createElement } = props;
-                            console.log(item)
-                            let defaultItemTemplate = `<a class="aa-ItemLink" href="${item.link}">${item.title}</a>`;
+                            let defaultItemTemplate = `
+                                <div class="aa-ItemContent">
+                                    <a class="aa-ItemLink" href="${item.link}">
+                                    ${item.featured_media_url ? `
+                                        <div class="aa-ItemIcon"><img src="${item.featured_media_url}" /></div>
+                                        ` : ''}
+                                        <div class="aa-ItemContentBody">
+                                            <div class="aa-ItemContentTitle">
+                                            ${item.title}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            `;
                             let itemTemplate = defaultHooks.applyFilters(`yuto_autocomplete_${indexName}_item_template`, defaultItemTemplate, props);
-                            return createElement('span', {
+                            return createElement('div', {
+                                className: 'aa-ItemWrapper',
                                 dangerouslySetInnerHTML: { __html: itemTemplate }
                             });
                         },
@@ -77,6 +91,7 @@ const YutoAutocomplete = ({ attributes }) => {
                             const { createElement } = props;
                             let footerTemplate = defaultHooks.applyFilters(`yuto_autocomplete_${indexName}_footer_template`, ``, props);
                             return createElement('div', {
+                                className: 'aa-ItemWrapper',
                                 dangerouslySetInnerHTML: { __html: footerTemplate }
                             });
                         },
@@ -84,7 +99,7 @@ const YutoAutocomplete = ({ attributes }) => {
                             const { createElement } = props;
                             let noResultsTemplate = defaultHooks.applyFilters(
                                 `yuto_autocomplete_${indexName}_noResults_template`,
-                                `<i>${__('No ${indexName} found!!!', 'yuto')}</i>`,
+                                `<i>${__(`No ${indexName} found!!!`, 'yuto')}</i>`,
                                 props
                             );
                             return createElement('div', {

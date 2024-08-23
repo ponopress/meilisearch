@@ -31,6 +31,10 @@
 		"openOnFocus": {
             "type": "boolean",
 			"default": false
+        },
+		"resultsPanelPlacement": {
+            "type": "string",
+			"default": "input-wrapper-width"
         }
 	}
 }

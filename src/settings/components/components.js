@@ -21,7 +21,7 @@ import {
     Dashicon,
     Spinner
 } from '@wordpress/components';
-import { post, page, seen, color } from '@wordpress/icons';
+import { post, page, seen, color, image } from '@wordpress/icons';
 import { useSettings } from '../../hooks';
 
 const HostURLControl = ({ value, onChange }) => {
@@ -169,18 +169,14 @@ const IndicesCard = (yutoSettingsProps) => {
 
     const getFeaturedMediaURL = async (id) => {
         try {
-            // If post has featured image it should be greater than 0
+            // If post has a featured image, it should be greater than 0
             if (id > 0) {
-
-                // Use  to get the media object
+                // Use apiFetch to get the media object
                 const media = await apiFetch({ path: `/wp/v2/media/${id}` });
-
-                // Extract the image URL (full size)
-                const imageURL = media.source_url;
-
-                return imageURL;
+                // Extract and return the image URL (full size)
+                return media.source_url;
             } else {
-                return null
+                return null;
             }
         } catch (error) {
             console.error('Error fetching the media:', error);
@@ -189,28 +185,48 @@ const IndicesCard = (yutoSettingsProps) => {
     };
 
     const { createSuccessNotice, createErrorNotice } = useDispatch(noticesStore);
-    const addDocumentsButtonClick = (postType, UID) => {
-        updateUIDs()
+
+    const addDocumentsButtonClick = async (postType, UID) => {
+        updateUIDs();
         let postObjects = [];
 
-        const queryParams = { posts_per_page: -1 }
-        apiFetch({ path: addQueryArgs(`/wp/v2/${postType}`, queryParams) }).then((posts) => {
-            postObjects = posts.map(post => {
-                return {
-                    id: post.id,
-                    title: post.title.rendered,
-                    featured_media_url: getFeaturedMediaURL(post.featured_media)
-                };
-            });
-            meilisearchClient.index(UID).addDocuments(postObjects)
-                .then((res) => {
-                    console.log(res)
-                    createSuccessNotice(
-                        __(`Documents for ${UID} added successfully.`, 'yuto')
-                    );
+        const queryParams = { posts_per_page: -1 };
+
+        try {
+            const posts = await apiFetch({ path: addQueryArgs(`/wp/v2/${postType}`, queryParams) });
+
+            postObjects = await Promise.all(
+                posts.map(async (post) => {
+                    // Get the featured media URL for each post
+                    const featured_media_url = await getFeaturedMediaURL(post.featured_media);
+
+                    return {
+                        id: post.id,
+                        title: post.title.rendered,
+                        link: post.link,
+                        featured_media_url: featured_media_url || '', // Default to an empty string if null
+                    };
                 })
-        });
-    }
+            );
+
+            // Add documents to Meilisearch
+            const res = await meilisearchClient.index(UID).addDocuments(postObjects);
+            console.log(res);
+
+            // Show success notice
+            createSuccessNotice(
+                __(`Documents for ${UID} added successfully.`, 'yuto')
+            );
+
+        } catch (error) {
+            // Handle any errors
+            console.error('Error adding documents to Meilisearch:', error);
+            createErrorNotice(
+                __(`Error adding documents for ${UID}: ${error.message}`, 'yuto')
+            );
+        }
+    };
+
 
     const deleteIndexButtonClick = (UID) => {
         meilisearchClient.deleteIndex(UID)

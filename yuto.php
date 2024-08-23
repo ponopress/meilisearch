@@ -23,12 +23,12 @@ if (! defined('YUTO_PLUGIN_FILE')) {
     define('YUTO_PLUGIN_FILE', __FILE__);
 }
 
-if (! class_exists('MeiliSearch')) {
+if (! class_exists('Yuto')) {
     include_once dirname(YUTO_PLUGIN_FILE) . '/inc/Yuto.php';
 }
 
 /**
- * The main function that returns the MeiliSearch class
+ * The main function that returns the Yuto class
  *
  * @since 1.0.0
  * @return object|Yuto
