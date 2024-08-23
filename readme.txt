@@ -4,7 +4,7 @@ Tags: search, better search, meilisearch, yuto
 Requires at least: 6.3
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 0.0.2
+Stable tag: 0.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,12 @@ Here are the detailed instructions to manually install a WordPress plugin by tra
 The WordPress codex contains [instructions on how to do this here](https://wordpress.org/documentation/article/manage-plugins/#finding-and-installing-plugins-1).
 
 == Changelog ==
+
+= 0.0.3 =
+* Fix open on focus option in **Autocomplete Search** block
+* Show image on result template
+* Add classes as per Alogila classic theme rule
+* Add option for search result panel placement
 
 = 0.0.2 =
 * Update readme file
