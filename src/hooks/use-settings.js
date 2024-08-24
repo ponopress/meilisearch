@@ -4,6 +4,7 @@ import { store as noticesStore } from '@wordpress/notices';
 import { useEffect, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { MeiliSearch } from 'meilisearch'
+import { addQueryArgs } from '@wordpress/url';
 import {
     meilisearchAutocompleteClient,
 } from '@meilisearch/autocomplete-client'
@@ -21,6 +22,9 @@ const useSettings = () => {
     });
     const [selectedTab, setSelectedTab] = useState('');
     const [UIDs, setUIDs] = useState(['post', 'page']);
+    // Handle progress state when `Add Documents` and `Delete Index` button is clicked
+    const [documentAddingState, setDocumentAddingState] = useState({});
+    const [indexDeletingState, setIndexDeletingState] = useState({});
 
     let yutoSettings = {
         hostURL,
@@ -147,6 +151,94 @@ const useSettings = () => {
         })
     }
 
+    const getFeaturedMediaURL = async (id) => {
+        try {
+            // If post has a featured image, it should be greater than 0
+            if (id > 0) {
+                // Use apiFetch to get the media object
+                const media = await apiFetch({ path: `/wp/v2/media/${id}` });
+                // Extract and return the image URL (full size)
+                return media.source_url;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching the media:', error);
+            return null;
+        }
+    };
+
+    const addDocuments = async (postType, UID) => {
+        updateUIDs();
+        let postObjects = [];
+
+        const queryParams = { posts_per_page: -1 };
+
+        try {
+            const posts = await apiFetch({ path: addQueryArgs(`/wp/v2/${postType}`, queryParams) });
+
+            postObjects = await Promise.all(
+                posts.map(async (post) => {
+                    // Get the featured media URL for each post
+                    const featured_media_url = await getFeaturedMediaURL(post.featured_media);
+
+                    return {
+                        id: post.id,
+                        title: post.title.rendered,
+                        link: post.link,
+                        featured_media_url: featured_media_url || '', // Default to an empty string if null
+                    };
+                })
+            );
+
+            // Add documents to Meilisearch
+            // setDocumentAddingState('inProgress')
+            setDocumentAddingState(prevState => ({
+                ...prevState,
+                [UID]: 'inProgress'
+            }));
+            const res = await meilisearchClient.index(UID).addDocuments(postObjects);
+            console.log(res);
+            setDocumentAddingState(prevState => ({
+                ...prevState,
+                [UID]: 'completed'
+            }));
+
+            // Show success notice
+            createSuccessNotice(
+                __(`Documents for ${UID} added successfully.`, 'yuto')
+            );
+
+        } catch (error) {
+            // Handle any errors
+            console.error('Error adding documents to Meilisearch:', error);
+            createErrorNotice(
+                __(`Error adding documents for ${UID}: ${error.message}`, 'yuto')
+            );
+        }
+    };
+
+    const deleteIndex = (UID) => {
+        const userConfirmed = window.confirm(`Are you sure you want to delete the index with UID: ${UID}?`);
+        if (userConfirmed) {
+            setIndexDeletingState(prevState => ({
+                ...prevState,
+                [UID]: 'inProgress'
+            }));
+            meilisearchClient.deleteIndex(UID)
+                .then((res) => {
+                    console.log(res)
+                    createErrorNotice(
+                        __(`Index with UID: ${UID} deleted.`, 'yuto')
+                    );
+                })
+            setIndexDeletingState(prevState => ({
+                ...prevState,
+                [UID]: 'completed'
+            }));
+        }
+    }
+
     return {
         hostURL,
         setHostURL,
@@ -162,7 +254,11 @@ const useSettings = () => {
         searchAPIKey,
         adminAPIKey,
         setUIDs,
-        autocompleteSearchClientFromSetting
+        autocompleteSearchClientFromSetting,
+        addDocuments,
+        deleteIndex,
+        documentAddingState,
+        indexDeletingState
     };
 };
 

@@ -1,8 +1,4 @@
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
-import { store as noticesStore } from '@wordpress/notices';
-import { useDispatch } from '@wordpress/data';
 
 import {
     // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -70,18 +66,41 @@ const SaveButton = ({ onClick }) => {
     );
 };
 
-const AddDocumentsButton = ({ onClick }) => {
+const AddDocumentsButton = ({ UID, onClick, documentAddingState }) => {
     return (
-        <Button variant="primary" onClick={onClick} __next40pxDefaultSize>
-            {__('Add Documents', 'yuto')}
+        <Button
+            variant="primary"
+            onClick={onClick}
+            disabled={documentAddingState === 'inProgress'}
+            __next40pxDefaultSize>
+            {documentAddingState === 'inProgress' ? (
+                <>
+                    <Spinner />
+                    <span> {__('Adding...', 'yuto')}</span>
+                </>
+            ) : (
+                __('Add Documents', 'yuto')
+            )}
         </Button>
     );
 };
 
-const DeleteIndexButton = ({ onClick }) => {
+const DeleteIndexButton = ({ onClick, indexDeletingState }) => {
     return (
-        <Button variant="secondary" onClick={onClick} __next40pxDefaultSize>
-            {__('Delete Index', 'yuto')}
+        <Button 
+        variant="secondary"
+        isDestructive 
+        onClick={onClick} 
+        disabled={indexDeletingState === 'inProgress'}
+        __next40pxDefaultSize>
+            {indexDeletingState === 'inProgress' ? (
+                <>
+                    <Spinner />
+                    <span> {__('Deleting...', 'yuto')}</span>
+                </>
+            ) : (
+                __('Delete Index', 'yuto')
+            )}
         </Button>
     );
 };
@@ -158,84 +177,15 @@ const MasterAPIKeyCard = (yutoSettingsProps) => {
 const IndicesCard = (yutoSettingsProps) => {
     const {
         connectionInfo,
-        meilisearchClient,
         UIDs,
         setUIDs,
-        updateUIDs
+        addDocuments,
+        deleteIndex,
+        documentAddingState,
+        indexDeletingState
     } = yutoSettingsProps
     if (!UIDs) {
         return <Spinner />
-    }
-
-    const getFeaturedMediaURL = async (id) => {
-        try {
-            // If post has a featured image, it should be greater than 0
-            if (id > 0) {
-                // Use apiFetch to get the media object
-                const media = await apiFetch({ path: `/wp/v2/media/${id}` });
-                // Extract and return the image URL (full size)
-                return media.source_url;
-            } else {
-                return null;
-            }
-        } catch (error) {
-            console.error('Error fetching the media:', error);
-            return null;
-        }
-    };
-
-    const { createSuccessNotice, createErrorNotice } = useDispatch(noticesStore);
-
-    const addDocumentsButtonClick = async (postType, UID) => {
-        updateUIDs();
-        let postObjects = [];
-
-        const queryParams = { posts_per_page: -1 };
-
-        try {
-            const posts = await apiFetch({ path: addQueryArgs(`/wp/v2/${postType}`, queryParams) });
-
-            postObjects = await Promise.all(
-                posts.map(async (post) => {
-                    // Get the featured media URL for each post
-                    const featured_media_url = await getFeaturedMediaURL(post.featured_media);
-
-                    return {
-                        id: post.id,
-                        title: post.title.rendered,
-                        link: post.link,
-                        featured_media_url: featured_media_url || '', // Default to an empty string if null
-                    };
-                })
-            );
-
-            // Add documents to Meilisearch
-            const res = await meilisearchClient.index(UID).addDocuments(postObjects);
-            console.log(res);
-
-            // Show success notice
-            createSuccessNotice(
-                __(`Documents for ${UID} added successfully.`, 'yuto')
-            );
-
-        } catch (error) {
-            // Handle any errors
-            console.error('Error adding documents to Meilisearch:', error);
-            createErrorNotice(
-                __(`Error adding documents for ${UID}: ${error.message}`, 'yuto')
-            );
-        }
-    };
-
-
-    const deleteIndexButtonClick = (UID) => {
-        meilisearchClient.deleteIndex(UID)
-            .then((res) => {
-                console.log(res)
-                createErrorNotice(
-                    __(`Index with UID: ${UID} deleted.`, 'yuto')
-                );
-            })
     }
 
     return (
@@ -267,8 +217,8 @@ const IndicesCard = (yutoSettingsProps) => {
                                             })}
                                         />
                                         <Flex>
-                                            <AddDocumentsButton onClick={() => addDocumentsButtonClick('posts', UIDs[0])} />
-                                            <DeleteIndexButton onClick={() => deleteIndexButtonClick(UIDs[0])} />
+                                            <AddDocumentsButton documentAddingState={documentAddingState[UIDs[0]]} onClick={() => addDocuments('posts', UIDs[0])} />
+                                            <DeleteIndexButton indexDeletingState={indexDeletingState[UIDs[0]]} onClick={() => deleteIndex(UIDs[0])} />
                                         </Flex>
                                     </PanelBody>
                                     <PanelBody title={__('Pages', 'yuto')} icon={<Dashicon icon="admin-page" />} initialOpen={false}>
@@ -283,8 +233,8 @@ const IndicesCard = (yutoSettingsProps) => {
                                             })}
                                         />
                                         <Flex>
-                                            <AddDocumentsButton onClick={() => addDocumentsButtonClick('pages', UIDs[1])} />
-                                            <DeleteIndexButton onClick={() => deleteIndexButtonClick(UIDs[1])} />
+                                            <AddDocumentsButton documentAddingState={documentAddingState[UIDs[1]]} onClick={() => addDocuments('pages', UIDs[1])} />
+                                            <DeleteIndexButton indexDeletingState={indexDeletingState[UIDs[1]]} onClick={() => deleteIndex(UIDs[1])} />
                                         </Flex>
                                     </PanelBody>
                                 </Panel>
