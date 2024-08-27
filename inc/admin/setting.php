@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Add the plugin settings page.
  *
@@ -8,44 +9,47 @@
 
 namespace Yuto\Admin;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  * Register the plugin settings page.
  *
  * @since 0.0.1
  */
-function add_settings_page() {
-	add_menu_page(
-		__( 'Yuto', 'yuto' ),
-		__( 'Yuto', 'yuto' ),
-		'manage_options',
-		'yuto-settings',
-		__NAMESPACE__ . '\print_settings_page',
+function add_settings_page()
+{
+    add_menu_page(
+        __('Yuto', 'yuto'),
+        __('Yuto', 'yuto'),
+        'manage_options',
+        'yuto-settings',
+        __NAMESPACE__ . '\print_settings_page',
         'dashicons-search'
-	);
+    );
 }
-add_action( 'admin_menu', __NAMESPACE__ . '\add_settings_page' );
+add_action('admin_menu', __NAMESPACE__ . '\add_settings_page');
 
 /**
  * Print the settings page wrapper div. Content is generated via JSX.
  *
  * @since 0.0.1
  */
-function print_settings_page() {
-	?>
-		<div class="wrap" id="yuto-settings"></div>
-	<?php
+function print_settings_page()
+{
+?>
+    <div class="wrap" id="yuto-settings"></div>
+<?php
 }
 
-function enqueue_settings_assets( $admin_page ) {
-    if ( 'toplevel_page_yuto-settings' !== $admin_page ) {
+function enqueue_settings_assets($admin_page)
+{
+    if ('toplevel_page_yuto-settings' !== $admin_page) {
         return;
     }
 
     $asset_file = YUTO_ABSPATH . 'build/settings/index.asset.php';
 
-    if ( ! file_exists( $asset_file ) ) {
+    if (! file_exists($asset_file)) {
         return;
     }
 
@@ -53,7 +57,7 @@ function enqueue_settings_assets( $admin_page ) {
 
     wp_enqueue_script(
         'yuto',
-        YUTO_PLUGIN_URL. 'build/settings/index.js',
+        YUTO_PLUGIN_URL . 'build/settings/index.js',
         $asset['dependencies'],
         $asset['version'],
         array(
@@ -62,26 +66,30 @@ function enqueue_settings_assets( $admin_page ) {
     );
     wp_enqueue_style(
         'yuto',
-        YUTO_PLUGIN_URL. 'build/settings/index.css',
+        YUTO_PLUGIN_URL . 'build/settings/index.css',
         array_filter(
             $asset['dependencies'],
-            function ( $style ) {
-                return wp_style_is( $style, 'registered' );
+            function ($style) {
+                return wp_style_is($style, 'registered');
             }
         ),
         $asset['version'],
     );
 }
 
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
+add_action('admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets');
 
-function register_settings() {
+function register_settings()
+{
     $default = array(
         'hostURL' => '',
         'searchAPIKey' => '',
         'masterAPIKey' => '',
         'adminAPIKey' => '',
-        'defaultPostTypesUIDs' => array('post', 'page')
+        'defaultPostTypesUIDs' => (object)array(
+            'post' => 'post',
+            'page' => 'page'
+        )
     );
     $schema  = array(
         'type'       => 'object',
@@ -99,7 +107,11 @@ function register_settings() {
                 'type' => 'string',
             ),
             'defaultPostTypesUIDs' => array(
-                'type' => 'array',
+                'type'       => 'object',
+                'properties' => array(
+                    'post' => array('type' => 'string'),
+                    'page' => array('type' => 'string')
+                )
             ),
         ),
     );
@@ -116,4 +128,4 @@ function register_settings() {
     );
 }
 
-add_action( 'init', __NAMESPACE__ .'\register_settings' );
+add_action('init', __NAMESPACE__ . '\register_settings');

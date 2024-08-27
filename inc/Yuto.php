@@ -95,7 +95,8 @@ final class Yuto
 
 		// Only include in the admin.
 		if (is_admin()) {
-			include_once YUTO_ABSPATH . 'inc/admin/index-update.php';
+			include_once YUTO_ABSPATH . 'inc/admin/class-yuto-meilisearch-client.php';
+			include_once YUTO_ABSPATH . 'inc/admin/post-update.php';
 		}
 	}
 

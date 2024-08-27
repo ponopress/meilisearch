@@ -16,6 +16,7 @@ const YutoAutocomplete = ({ attributes }) => {
     if ('undefined' === typeof yutoViewData) {
         let { autocompleteSearchClientFromSetting } = useSettings();
         autocompleteSearchClient = autocompleteSearchClientFromSetting;
+        
     } else {
         autocompleteSearchClient = meilisearchAutocompleteClient({
             url: yutoViewData.host, // Host

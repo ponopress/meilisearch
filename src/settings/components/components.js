@@ -87,12 +87,12 @@ const AddDocumentsButton = ({ UID, onClick, documentAddingState }) => {
 
 const DeleteIndexButton = ({ onClick, indexDeletingState }) => {
     return (
-        <Button 
-        variant="secondary"
-        isDestructive 
-        onClick={onClick} 
-        disabled={indexDeletingState === 'inProgress'}
-        __next40pxDefaultSize>
+        <Button
+            variant="secondary"
+            isDestructive
+            onClick={onClick}
+            disabled={indexDeletingState === 'inProgress'}
+            __next40pxDefaultSize>
             {indexDeletingState === 'inProgress' ? (
                 <>
                     <Spinner />
@@ -208,33 +208,29 @@ const IndicesCard = (yutoSettingsProps) => {
                                     <PanelBody title={__('Posts', 'yuto')} icon={<Dashicon icon="admin-post" />} >
                                         <IndexUIDControl
                                             placeholder="post"
-                                            value={UIDs[0]}
-                                            onChange={(value) => setUIDs((prevUIDs) => {
-                                                // Create a new array with the updated first element
-                                                const newUIDs = [...prevUIDs]; // Spread operator to copy the previous state array
-                                                newUIDs[0] = value; // Update the first element
-                                                return newUIDs;
-                                            })}
+                                            value={UIDs.post}
+                                            onChange={(value) => setUIDs((prevUIDs) => ({
+                                                ...prevUIDs,
+                                                post: value
+                                            }))}
                                         />
                                         <Flex>
-                                            <AddDocumentsButton documentAddingState={documentAddingState[UIDs[0]]} onClick={() => addDocuments('posts', UIDs[0])} />
-                                            <DeleteIndexButton indexDeletingState={indexDeletingState[UIDs[0]]} onClick={() => deleteIndex(UIDs[0])} />
+                                            <AddDocumentsButton documentAddingState={documentAddingState[UIDs.post]} onClick={() => addDocuments('posts', UIDs.post)} />
+                                            <DeleteIndexButton indexDeletingState={indexDeletingState[UIDs.post]} onClick={() => deleteIndex(UIDs.post)} />
                                         </Flex>
                                     </PanelBody>
                                     <PanelBody title={__('Pages', 'yuto')} icon={<Dashicon icon="admin-page" />} initialOpen={false}>
                                         <IndexUIDControl
                                             placeholder="page"
-                                            value={UIDs[1]}
-                                            onChange={(value) => setUIDs((prevUIDs) => {
-                                                // Create a new array with the updated first element
-                                                const newUIDs = [...prevUIDs]; // Spread operator to copy the previous state array
-                                                newUIDs[1] = value; // Update the first element
-                                                return newUIDs;
-                                            })}
+                                            value={UIDs.page}
+                                            onChange={(value) => setUIDs((prevUIDs) => ({
+                                                ...prevUIDs,
+                                                page: value
+                                            }))}
                                         />
                                         <Flex>
-                                            <AddDocumentsButton documentAddingState={documentAddingState[UIDs[1]]} onClick={() => addDocuments('pages', UIDs[1])} />
-                                            <DeleteIndexButton indexDeletingState={indexDeletingState[UIDs[1]]} onClick={() => deleteIndex(UIDs[1])} />
+                                            <AddDocumentsButton documentAddingState={documentAddingState[UIDs.page]} onClick={() => addDocuments('pages', UIDs.page)} />
+                                            <DeleteIndexButton indexDeletingState={indexDeletingState[UIDs.page]} onClick={() => deleteIndex(UIDs.page)} />
                                         </Flex>
                                     </PanelBody>
                                 </Panel>

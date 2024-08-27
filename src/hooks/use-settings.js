@@ -8,6 +8,7 @@ import { addQueryArgs } from '@wordpress/url';
 import {
     meilisearchAutocompleteClient,
 } from '@meilisearch/autocomplete-client'
+import { settings } from '@wordpress/icons';
 
 const useSettings = () => {
     const [hostURL, setHostURL] = useState('');
@@ -21,7 +22,10 @@ const useSettings = () => {
         error: null,
     });
     const [selectedTab, setSelectedTab] = useState('');
-    const [UIDs, setUIDs] = useState(['post', 'page']);
+    const [UIDs, setUIDs] = useState({
+        post: 'post',
+        page: 'page'
+    });
     // Handle progress state when `Add Documents` and `Delete Index` button is clicked
     const [documentAddingState, setDocumentAddingState] = useState({});
     const [indexDeletingState, setIndexDeletingState] = useState({});
@@ -36,6 +40,7 @@ const useSettings = () => {
     const { createSuccessNotice, createErrorNotice } = useDispatch(noticesStore);
     useEffect(() => {
         console.log('api fetching')
+
         apiFetch({ path: '/wp/v2/settings' }).then((settings) => {
             if (settings.yuto_settings) {
                 setHostURL(settings.yuto_settings.hostURL);
@@ -43,10 +48,9 @@ const useSettings = () => {
                 setSearchAPIKey(settings.yuto_settings.searchAPIKey);
                 setAdminAPIKey(settings.yuto_settings.adminAPIKey);
                 setUIDs(settings.yuto_settings.defaultPostTypesUIDs);
+                createMeiliesearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.masterAPIKey)
+                createAutocompleteSearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.masterAPIKey)
             }
-
-            createMeiliesearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.masterAPIKey)
-            createAutocompleteSearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.masterAPIKey)
         })
     }, [])
 
@@ -110,7 +114,6 @@ const useSettings = () => {
                 });
             client.getKeys()
                 .then((keys) => {
-                    console.log(keys);
                     setSearchAPIKey(keys.results[0].key)
                     setAdminAPIKey(keys.results[1].key)
                 })
@@ -119,7 +122,6 @@ const useSettings = () => {
 
     const connectMeilisearch = () => {
         console.log('save button click')
-
         apiFetch({
             path: '/wp/v2/settings',
             method: 'POST',
