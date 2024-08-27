@@ -110,6 +110,7 @@ const useSettings = () => {
                 });
             client.getKeys()
                 .then((keys) => {
+                    console.log(keys);
                     setSearchAPIKey(keys.results[0].key)
                     setAdminAPIKey(keys.results[1].key)
                 })

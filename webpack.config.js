@@ -39,6 +39,7 @@ module.exports = [
         ...(defaultConfig),
         entry: {
             'settings/index' : path.resolve( process.cwd(), 'src', 'settings/index.js' ),
+            'post-update/index' : path.resolve( process.cwd(), 'src', 'post-update/index.js' ),
         }
     }
 ];
