@@ -56,4 +56,5 @@ function index_post_to_meilisearch($post_id, $post, $update)
 }
 
 // Hook into the save_post action
-add_action('wp_insert_post', 'index_post_to_meilisearch', 10, 3);
+add_action('save_post', 'index_post_to_meilisearch', 10, 3);
+

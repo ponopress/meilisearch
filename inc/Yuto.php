@@ -92,12 +92,12 @@ final class Yuto
 		if (is_admin() && ! (defined('DOING_AJAX') && DOING_AJAX)) {
 			include_once YUTO_ABSPATH . 'inc/admin/plugin-action-links.php';
 		}
-
+		
 		// Only include in the admin.
-		if (is_admin()) {
+		// if (is_admin() && ! (defined('DOING_AJAX') && DOING_AJAX)) {
 			include_once YUTO_ABSPATH . 'inc/admin/class-yuto-meilisearch-client.php';
 			include_once YUTO_ABSPATH . 'inc/admin/post-update.php';
-		}
+		// }
 	}
 
 	/**
