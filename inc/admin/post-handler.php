@@ -35,7 +35,6 @@ function index_post_to_meilisearch($post_id, $post, $update)
         'link' => get_permalink($post_id),
         'featured_media_url'   => get_the_post_thumbnail_url($post_id, 'full')
     ];
-
     $yutoSettings = get_option('yuto_settings');
 
     // Ensure yuto_settings and defaultPostTypesUIDs are available and valid
@@ -67,7 +66,7 @@ function index_post_to_meilisearch($post_id, $post, $update)
     }
 }
 
-// Hook into the save_post action
+// Hook into the wp_after_insert_post action
 add_action('wp_after_insert_post',  __NAMESPACE__ . '\index_post_to_meilisearch', 10, 3);
 
 /**

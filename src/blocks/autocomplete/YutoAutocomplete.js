@@ -16,7 +16,7 @@ const YutoAutocomplete = ({ attributes }) => {
     if ('undefined' === typeof yutoViewData) {
         let { autocompleteSearchClientFromSetting } = useSettings();
         autocompleteSearchClient = autocompleteSearchClientFromSetting;
-        
+
     } else {
         autocompleteSearchClient = meilisearchAutocompleteClient({
             url: yutoViewData.host, // Host
@@ -61,7 +61,9 @@ const YutoAutocomplete = ({ attributes }) => {
                     templates: {
                         header(props) {
                             const { createElement } = props;
-                            let headerTemplate = defaultHooks.applyFilters(`yuto_autocomplete_${indexName}_header_template`, `<b>${indexName}</b>`, props);
+                            let formattedIndexName = indexName.charAt(0).toUpperCase() + indexName.slice(1);
+
+                            let headerTemplate = defaultHooks.applyFilters(`yuto_autocomplete_${indexName}_header_template`, `<b>${formattedIndexName}</b>`, props);
                             return createElement('div', {
                                 dangerouslySetInnerHTML: { __html: headerTemplate }
                             });

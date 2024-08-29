@@ -76,7 +76,7 @@ final class Yuto
 	 *
 	 * @since 0.0.1
 	 */
-	public function actions() {}
+	public function actions(){}
 
 	/**
 	 * Include required files.
@@ -92,23 +92,8 @@ final class Yuto
 		if (is_admin() && ! (defined('DOING_AJAX') && DOING_AJAX)) {
 			include_once YUTO_ABSPATH . 'inc/admin/plugin-action-links.php';
 		}
-
-		function wporg_current_screen_example($current_screen)
-		{
-			if ($current_screen instanceof \WP_Screen && $current_screen->is_block_editor()) {
-				var_dump($current_screen);
-				die;
-			}
-		}
-		add_action('current_screen', 'wporg_current_screen_example');
-		// Only include in the admin.
-		// $current_screen = get_current_screen();
-		// var_dump( $current_screen );
-		if (defined('REST_REQUEST') && REST_REQUEST && ('edit' === $_GET['context'])) {
-			die;
-			include_once YUTO_ABSPATH . 'inc/admin/class-yuto-meilisearch-client.php';
-			include_once YUTO_ABSPATH . 'inc/admin/post-handler.php';
-		}
+		include_once YUTO_ABSPATH . 'inc/admin/class-yuto-meilisearch-client.php';
+		include_once YUTO_ABSPATH . 'inc/admin/post-handler.php';
 	}
 
 	/**
