@@ -13,26 +13,24 @@ defined('ABSPATH') || exit;
 
 class Yuto_Meilisearch_Client
 {
-
     private $host;
     private $indexName;
     private $apiKey;
+    private $baseUrl;
 
     public function __construct($indexName)
     {
         $yutoSettings = get_option('yuto_settings');
-        $this->host = $yutoSettings['hostURL'];
-        $this->indexName = $indexName;
+        $this->host = rtrim($yutoSettings['hostURL'], '/');
+        $this->indexName = urlencode($indexName);
         $this->apiKey = $yutoSettings['masterAPIKey'];
-
-        // Optional: Initialize the index if it doesn't exist
-        // $this->create_index();
+        $this->baseUrl = "{$this->host}/indexes/{$this->indexName}";
     }
 
     // Function to create an index if it doesn't exist
     private function create_index()
     {
-        $url = $this->host . '/indexes/' . urlencode($this->indexName);
+        $url = $this->baseUrl;
 
         $response = wp_remote_get($url, [
             'headers' => $this->get_headers()
@@ -50,7 +48,7 @@ class Yuto_Meilisearch_Client
     // Function to index a document
     public function index_document($document)
     {
-        $url = $this->host . '/indexes/' . urlencode($this->indexName) . '/documents';
+        $url = "{$this->baseUrl}/documents";
 
         $response = wp_remote_post($url, [
             'body' => json_encode([$document]),
@@ -58,6 +56,19 @@ class Yuto_Meilisearch_Client
         ]);
 
         return wp_remote_retrieve_response_code($response) === 202;
+    }
+
+    // Function to delete a document by ID
+    public function delete_document($document_id)
+    {
+        $url = "{$this->baseUrl}/documents/" . urlencode($document_id);
+
+        $response = wp_remote_request($url, [
+            'method' => 'DELETE',
+            'headers' => $this->get_headers(),
+        ]);
+
+        return wp_remote_retrieve_response_code($response) === 204;
     }
 
     // Helper function to get headers with authorization
