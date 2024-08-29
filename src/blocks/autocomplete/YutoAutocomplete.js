@@ -23,7 +23,7 @@ const YutoAutocomplete = ({ attributes }) => {
             apiKey: yutoViewData.searchAPIKey  // API key
         })
     }
-
+    
     const containerRef = useRef(null);
     const { enabledIndices, placeholder, autoFocus, openOnFocus, resultsPanelPlacement } = attributes
 

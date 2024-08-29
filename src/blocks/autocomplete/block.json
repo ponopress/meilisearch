@@ -9,7 +9,8 @@
 	"description": "Yuto - Meilisearch Autocomplete.",
 	"example": {},
 	"supports": {
-		"html": false
+		"html": false,
+		"align": [ "left", "right", "full" ]
 	},
 	"textdomain": "yuto",
 	"editorScript": "file:./index.js",
