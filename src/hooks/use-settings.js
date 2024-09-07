@@ -194,7 +194,10 @@ const useSettings = () => {
     };
 
     const addDocuments = async (restBase, UID) => {
-
+        setDocumentAddingState(prevState => ({
+            ...prevState,
+            [UID]: 'inProgress'
+        }));
         updateUIDs(restBase, UID);
         let postObjects = [];
 
@@ -218,11 +221,6 @@ const useSettings = () => {
             );
 
             // Add documents to Meilisearch
-            // setDocumentAddingState('inProgress')
-            setDocumentAddingState(prevState => ({
-                ...prevState,
-                [UID]: 'inProgress'
-            }));
             const res = await meilisearchClient.index(UID).addDocuments(postObjects);
             console.log(res);
             setDocumentAddingState(prevState => ({

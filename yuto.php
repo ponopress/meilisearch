@@ -6,7 +6,7 @@
  * Description:       Turbocharge your website search with lightning-fast and hyper-relevant Meilisearch search engine 
  * Requires at least: 6.3
  * Requires PHP:      7.0
- * Version:           0.0.3
+ * Version:           0.0.4
  * Author:            Pono Press
  * Author URI:		  https://ponopress.com/
  * License:           GPL-2.0-or-later

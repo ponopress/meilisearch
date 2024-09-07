@@ -4,7 +4,7 @@ Tags: search, better search, meilisearch, yuto
 Requires at least: 6.3
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 0.0.3
+Stable tag: 0.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,13 @@ Here are the detailed instructions to manually install a WordPress plugin by tra
 The WordPress codex contains [instructions on how to do this here](https://wordpress.org/documentation/article/manage-plugins/#finding-and-installing-plugins-1).
 
 == Changelog ==
+
+= 0.0.4 =
+* Include featured images in the default search results.
+* Index documents during post updates, deletions, and bulk edits.
+* Display a loading indicator while indexing and deleting documents.
+* Enable indexing for all available post types, excluding default types like `navigation`, `media` and so on.
+* Add support for WooCommerce
 
 = 0.0.3 =
 * Fix open on focus option in **Autocomplete Search** block

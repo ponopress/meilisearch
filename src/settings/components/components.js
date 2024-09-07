@@ -190,7 +190,7 @@ const IndicesCard = (yutoSettingsProps) => {
     if (!UIDs) {
         return <Spinner />
     }
-
+    
     // Define the filter function
     const removeExcludedPostTypes = (filteredPostTypes) => {
         const excludedPostTypes = [
