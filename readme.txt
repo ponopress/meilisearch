@@ -23,6 +23,10 @@ Meilisearch is an open-source, blazing-fast, and feature-rich search engine. It'
 
 **Site Editor Blocks:** Yuto is fully compatible with the new Site Editor, offering an Autocomplete Search block for seamless integration and intuitive use. Additional blocks will be available soon.
 
+**WooCommerce Compatible:** Yuto is fully compatible with WooCommerce, making it easy to index your store's products directly into Meilisearch. With Yuto, you can provide your customers with an enhanced search experience, allowing them to quickly find the products they need in your WooCommerce store. 
+
+**Custom Post Types Support:**  Yuto offers extensive support for custom post types, ensuring full compatibility with any plugin that adds custom post types. This integration allows you to easily index various post types directly into Meilisearch. By using Yuto, you can enhance your customers' search experience across all post types, seamlessly working with plugins such as Easy Digital Downloads, BuddyPress, and others.
+
 **Support and Continuous Development**
 
 Reliable support to promptly addressing any issues you encounter. 
