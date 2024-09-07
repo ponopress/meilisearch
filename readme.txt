@@ -64,6 +64,7 @@ The WordPress codex contains [instructions on how to do this here](https://wordp
 * Display a loading indicator while indexing and deleting documents.
 * Enable indexing for all available post types, excluding default types like `navigation`, `media` and so on.
 * Add support for WooCommerce
+* Add autocomplete theme color option for block
 
 = 0.0.3 =
 * Fix open on focus option in **Autocomplete Search** block
