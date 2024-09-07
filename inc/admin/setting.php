@@ -87,10 +87,11 @@ function register_settings()
         'masterAPIKey' => '',
         'adminAPIKey' => '',
         'defaultPostTypesUIDs' => (object)array(
-            'post' => 'post',
-            'page' => 'page'
+            'posts' => 'post',
+            'pages' => 'page'
         )
     );
+
     $schema  = array(
         'type'       => 'object',
         'properties' => array(
@@ -108,10 +109,7 @@ function register_settings()
             ),
             'defaultPostTypesUIDs' => array(
                 'type'       => 'object',
-                'properties' => array(
-                    'post' => array('type' => 'string'),
-                    'page' => array('type' => 'string')
-                )
+                'additionalProperties' => array('type' => 'string'),
             ),
         ),
     );

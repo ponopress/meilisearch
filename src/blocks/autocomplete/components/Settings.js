@@ -15,6 +15,7 @@ export default function Settings(props) {
 	const { attributes, setAttributes } = props
 	const { enabledIndices, placeholder, autoFocus, openOnFocus, resultsPanelPlacement } = attributes
 	const suggestions = Object.values(UIDs) // Convert to array of values
+	console.log(UIDs);
 	
 
 	return (

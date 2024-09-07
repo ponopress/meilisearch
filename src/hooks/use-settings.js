@@ -23,9 +23,11 @@ const useSettings = () => {
     });
     const [selectedTab, setSelectedTab] = useState('');
     const [UIDs, setUIDs] = useState({
-        post: 'post',
-        page: 'page'
+        posts: 'post',
+        pages: 'page'
     });
+    const [postTypes, setPostTypes] = useState({});
+
     // Handle progress state when `Add Documents` and `Delete Index` button is clicked
     const [documentAddingState, setDocumentAddingState] = useState({});
     const [indexDeletingState, setIndexDeletingState] = useState({});
@@ -52,6 +54,10 @@ const useSettings = () => {
                 createAutocompleteSearchClient(settings.yuto_settings.hostURL, settings.yuto_settings.masterAPIKey)
             }
         })
+
+        apiFetch({ path: '/wp/v2/types' })
+            .then((data) => setPostTypes(data))
+            .catch((error) => console.error('Error fetching post types:', error));
     }, [])
 
     const createAutocompleteSearchClient = (host, masterAPIKey) => {
@@ -139,20 +145,36 @@ const useSettings = () => {
         })
     };
 
-    const updateUIDs = () => {
-        console.log('updating UIDs')
-
-        apiFetch({
-            path: '/wp/v2/settings',
-            method: 'POST',
-            data: {
-                yuto_settings: {
-                    ...yutoSettings,
-                    defaultPostTypesUIDs: UIDs
+    const updateUIDs = (restBase, UID, action = 'add') => {
+        console.log(`Performing ${action} on UIDs`);
+    
+        setUIDs((prevUIDs) => {
+            const updatedUIDs = { ...prevUIDs };
+    
+            if (action === 'delete') {
+                // Delete the key if the action is 'delete'
+                delete updatedUIDs[restBase];
+            } else if (action === 'add') {
+                // Update or add the key if the action is 'add'
+                updatedUIDs[restBase] = UID;
+            }
+    
+            // Perform the API request inside the callback to use the updated state
+            apiFetch({
+                path: '/wp/v2/settings',
+                method: 'POST',
+                data: {
+                    yuto_settings: {
+                        ...yutoSettings,
+                        defaultPostTypesUIDs: updatedUIDs, // Use updated state here
+                    },
                 },
-            },
-        })
-    }
+            });
+    
+            return updatedUIDs;
+        });
+    };
+    
 
     const getFeaturedMediaURL = async (id) => {
         try {
@@ -171,14 +193,15 @@ const useSettings = () => {
         }
     };
 
-    const addDocuments = async (postType, UID) => {
-        updateUIDs();
+    const addDocuments = async (restBase, UID) => {
+
+        updateUIDs(restBase, UID);
         let postObjects = [];
 
         const queryParams = { posts_per_page: -1 };
 
         try {
-            const posts = await apiFetch({ path: addQueryArgs(`/wp/v2/${postType}`, queryParams) });
+            const posts = await apiFetch({ path: addQueryArgs(`/wp/v2/${restBase}`, queryParams) });
 
             postObjects = await Promise.all(
                 posts.map(async (post) => {
@@ -221,7 +244,7 @@ const useSettings = () => {
         }
     };
 
-    const deleteIndex = (UID) => {
+    const deleteIndex = (restBase, UID) => {
         const userConfirmed = window.confirm(`Are you sure you want to delete the index with UID: ${UID}?`);
         if (userConfirmed) {
             setIndexDeletingState(prevState => ({
@@ -235,6 +258,7 @@ const useSettings = () => {
                         __(`Index with UID: ${UID} deleted.`, 'yuto')
                     );
                 })
+            updateUIDs(restBase, UID, 'delete')
             setIndexDeletingState(prevState => ({
                 ...prevState,
                 [UID]: 'completed'
@@ -261,7 +285,8 @@ const useSettings = () => {
         addDocuments,
         deleteIndex,
         documentAddingState,
-        indexDeletingState
+        indexDeletingState,
+        postTypes
     };
 };
 

@@ -17,7 +17,8 @@ import {
     Dashicon,
     Spinner
 } from '@wordpress/components';
-import { post, page, seen, color, image } from '@wordpress/icons';
+import { post, page, seen, color, image, filter } from '@wordpress/icons';
+import { applyFilters, addFilter } from '@wordpress/hooks';
 import { useSettings } from '../../hooks';
 
 const HostURLControl = ({ value, onChange }) => {
@@ -182,10 +183,53 @@ const IndicesCard = (yutoSettingsProps) => {
         addDocuments,
         deleteIndex,
         documentAddingState,
-        indexDeletingState
+        indexDeletingState,
+        postTypes
     } = yutoSettingsProps
+    
     if (!UIDs) {
         return <Spinner />
+    }
+
+    // Define the filter function
+    const removeExcludedPostTypes = (filteredPostTypes) => {
+        const excludedPostTypes = [
+            'attachment',
+            'nav_menu_item',
+            'wp_block',
+            'wp_template',
+            'wp_template_part',
+            'wp_global_styles',
+            'wp_navigation',
+            'wp_font_family',
+            'wp_font_face'
+        ];
+
+        return Object.keys(filteredPostTypes).reduce((acc, key) => {
+            if (!excludedPostTypes.includes(key)) {
+                acc[key] = filteredPostTypes[key];
+            }
+            return acc;
+        }, {});
+    };
+
+    // Add the filter
+    addFilter('yuto_autocomplete_postTypes', 'yuto/remove-excluded-post-types', removeExcludedPostTypes);
+
+    const filteredPostTypes = applyFilters('yuto_autocomplete_postTypes', postTypes);
+
+    const removeDashiconPrefix = (value) => {
+        if (value === null) {
+            return null;
+        }
+    
+        const prefix = 'dashicons-';
+    
+        if (value.startsWith(prefix)) {
+            return value.slice(prefix.length);
+        }
+    
+        return value;
     }
 
     return (
@@ -205,34 +249,33 @@ const IndicesCard = (yutoSettingsProps) => {
                                 <p>{__('Configure', 'yuto')} <a target='_blank' href='https://www.meilisearch.com/docs/learn/core_concepts/indexes#index-uid'>{__('UID (unique identifier)', 'yuto')}</a> {__('for each index and add documents to each index.', 'yuto')}</p></FlexBlock>
                             <FlexBlock style={{ flexBasis: "80%" }}>
                                 <Panel header={__('Indices', 'yuto')}>
-                                    <PanelBody title={__('Posts', 'yuto')} icon={<Dashicon icon="admin-post" />} >
-                                        <IndexUIDControl
-                                            placeholder="post"
-                                            value={UIDs.post}
-                                            onChange={(value) => setUIDs((prevUIDs) => ({
-                                                ...prevUIDs,
-                                                post: value
-                                            }))}
-                                        />
-                                        <Flex>
-                                            <AddDocumentsButton documentAddingState={documentAddingState[UIDs.post]} onClick={() => addDocuments('posts', UIDs.post)} />
-                                            <DeleteIndexButton indexDeletingState={indexDeletingState[UIDs.post]} onClick={() => deleteIndex(UIDs.post)} />
-                                        </Flex>
-                                    </PanelBody>
-                                    <PanelBody title={__('Pages', 'yuto')} icon={<Dashicon icon="admin-page" />} initialOpen={false}>
-                                        <IndexUIDControl
-                                            placeholder="page"
-                                            value={UIDs.page}
-                                            onChange={(value) => setUIDs((prevUIDs) => ({
-                                                ...prevUIDs,
-                                                page: value
-                                            }))}
-                                        />
-                                        <Flex>
-                                            <AddDocumentsButton documentAddingState={documentAddingState[UIDs.page]} onClick={() => addDocuments('pages', UIDs.page)} />
-                                            <DeleteIndexButton indexDeletingState={indexDeletingState[UIDs.page]} onClick={() => deleteIndex(UIDs.page)} />
-                                        </Flex>
-                                    </PanelBody>
+                                    {Object.keys(filteredPostTypes).map((type, index) => (
+                                        <PanelBody
+                                            key={type}
+                                            title={filteredPostTypes[type].name}
+                                            icon={<Dashicon icon={removeDashiconPrefix(filteredPostTypes[type].icon)} />}
+                                            initialOpen={index === 0} // Open the first one, close the rest
+                                        >
+                                            <IndexUIDControl
+                                                placeholder={type}
+                                                value={UIDs[type] || type} // Assign post type slug if UID is empty
+                                                onChange={(value) => setUIDs((prevUIDs) => ({
+                                                    ...prevUIDs,
+                                                    [type]: value
+                                                }))}
+                                            />
+                                            <Flex>
+                                                <AddDocumentsButton
+                                                    documentAddingState={documentAddingState[UIDs[type] || type]}
+                                                    onClick={() => addDocuments(filteredPostTypes[type].rest_base, UIDs[type] || type)}
+                                                />
+                                                <DeleteIndexButton
+                                                    indexDeletingState={indexDeletingState[UIDs[type] || type]}
+                                                    onClick={() => deleteIndex(filteredPostTypes[type].rest_base, UIDs[type] || type)}
+                                                />
+                                            </Flex>
+                                        </PanelBody>
+                                    ))}
                                 </Panel>
                             </FlexBlock>
                         </Flex>

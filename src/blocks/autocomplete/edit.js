@@ -21,6 +21,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 import './editor.scss';
 import YutoAutocomplete from './YutoAutocomplete';
 import InspectorSettings from './inspector-settings';
+import { withFocusOutside, IsolatedEventContainer } from '@wordpress/components';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -30,16 +31,53 @@ import InspectorSettings from './inspector-settings';
  *
  * @return {Element} Element to render.
  */
+
+const YutoAutocompleteFocusOutside = withFocusOutside(
+	class extends React.Component {
+		constructor(props) {
+			super(props);
+			this.state = {
+				shouldPanelOpen: true,
+			};
+
+			this.handleFocusOutside = this.handleFocusOutside.bind(this);
+			this.toggleAutocomplete = this.toggleAutocomplete.bind(this);
+		}
+
+		handleFocusOutside() {
+			this.setState({ shouldPanelOpen: false });
+		}
+
+		toggleAutocomplete(show) {
+			this.setState({ shouldPanelOpen: true });
+		}
+
+		render() {
+			const { attributes } = this.props;
+			const { shouldPanelOpen } = this.state;
+			return (
+				<IsolatedEventContainer
+					className="component-some_component"
+				>
+					<YutoAutocomplete
+						attributes={attributes}
+						shouldPanelOpen={this.state.shouldPanelOpen}
+						onFocus={() => this.toggleAutocomplete(true)}
+					/>
+				</IsolatedEventContainer>
+			);
+		}
+	}
+);
+
 export default function Edit(props) {
-	const {attributes} = props
-	const blockProps = useBlockProps()
+	const { attributes } = props;
+	const blockProps = useBlockProps();
 
 	return (
 		<div {...blockProps}>
-			<InspectorSettings
-				{...props}
-			/>
-			<YutoAutocomplete attributes={attributes} />
+			<InspectorSettings {...props} />
+			<YutoAutocompleteFocusOutside attributes={attributes} />
 		</div>
 	);
 }
