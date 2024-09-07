@@ -13,7 +13,7 @@ export default function InspectorSettings(props) {
 				<Settings {...props} yutoSettingProps={yutoSettingProps}/>
 			</InspectorControls>
 			<InspectorControls group="styles">
-				{/* <DisplaySettings {...props} /> */}
+				<DisplaySettings {...props} />
 			</InspectorControls>
 		</>
 	);

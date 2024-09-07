@@ -36,6 +36,9 @@
 		"resultsPanelPlacement": {
             "type": "string",
 			"default": "input-wrapper-width"
+        },
+		"themeColor": {
+            "type": "string"
         }
 	}
 }
