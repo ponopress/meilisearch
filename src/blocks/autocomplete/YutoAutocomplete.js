@@ -9,23 +9,6 @@ import {
 } from '@meilisearch/autocomplete-client'
 import { defaultHooks } from '@wordpress/hooks';
 
-const hexToRgb = (hex) => {
-    // Remove the leading '#' if present
-    hex = hex.replace(/^#/, '');
-
-    // Handle short hex code (#abc)
-    if (hex.length === 3) {
-        hex = hex.split('').map(char => char + char).join('');
-    }
-
-    const bigint = parseInt(hex, 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-
-    return `${r}, ${g}, ${b}`;
-};
-
 const YutoAutocomplete = ({ shouldPanelOpen, attributes }) => {
     let autocompleteSearchClient;
     // Checking `yutoViewData` since it is available only if called from frontend
