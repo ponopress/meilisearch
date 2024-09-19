@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function yuto_block_init() {
 	register_block_type( YUTO_ABSPATH . 'build/blocks/autocomplete' );
+	register_block_type( YUTO_ABSPATH . 'build/blocks/instant-search' );
 }
 add_action( 'init', 'yuto_block_init' );
 

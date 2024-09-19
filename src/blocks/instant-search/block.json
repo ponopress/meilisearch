@@ -1,0 +1,44 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "yuto/instant-search",
+	"version": "0.0.1",
+	"title": "Instant Search",
+	"category": "widgets",
+	"icon": "search",
+	"description": "Yuto - Meilisearch Instant Search.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": [ "left", "right", "full" ]
+	},
+	"textdomain": "yuto",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"attributes": {
+        "enabledIndices": {
+            "type": "array"
+        },
+		"placeholder": {
+            "type": "string",
+			"default": "Search..."
+        },
+		"autoFocus": {
+            "type": "boolean",
+			"default": false
+        },
+		"openOnFocus": {
+            "type": "boolean",
+			"default": false
+        },
+		"resultsPanelPlacement": {
+            "type": "string",
+			"default": "input-wrapper-width"
+        },
+		"themeColor": {
+            "type": "string"
+        }
+	}
+}
