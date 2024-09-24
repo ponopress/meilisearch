@@ -210,25 +210,20 @@ const useSettings = () => {
                 posts.map(async (post) => {
                     // Get the featured media URL for each post
                     const featured_media_url = await getFeaturedMediaURL(post.featured_media);
-
                     // Apply the filter to modify the post object before returning
                     return defaultHooks.applyFilters('yuto_modify_documents_data', {
                         id: post.id,
                         title: post.title.rendered,
                         link: post.link,
                         featured_media_url: featured_media_url || '', // Default to an empty string if null
+                        categories: post.categories || '', // Default to an empty string if null
                     }, post, UID);
-                    // return {
-                    //     id: post.id,
-                    //     title: post.title.rendered,
-                    //     link: post.link,
-                    //     featured_media_url: featured_media_url || '', // Default to an empty string if null
-                    // };
                 })
             );
 
             // Add documents to Meilisearch
             const res = await meilisearchClient.index(UID).addDocuments(postObjects);
+            await meilisearchClient.index(UID).updateFilterableAttributes(['categories']);
             console.log(res);
             setDocumentAddingState(prevState => ({
                 ...prevState,

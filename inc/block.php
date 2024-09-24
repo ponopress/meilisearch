@@ -26,5 +26,10 @@ function yuto_enqueue_script() {
         'searchAPIKey' => $yuto_settings['searchAPIKey'],
         'host' => esc_url( $yuto_settings['hostURL'] )
     ));
+
+	wp_localize_script('yuto-instant-search-view-script', 'yutoViewData', array(
+        'searchAPIKey' => $yuto_settings['searchAPIKey'],
+        'host' => esc_url( $yuto_settings['hostURL'] )
+    ));
 }
 add_action('wp_enqueue_scripts', 'yuto_enqueue_script');
