@@ -21,6 +21,13 @@ const YutoInstantSearch = () => (
     </InstantSearch>
 );
 
-const Hit = ({ hit }) => <Highlight attribute="title" hit={hit} />;
+const Hit = ({ hit }) => {
+    return (
+        <article>
+            <Highlight attribute="title" hit={hit} />;
+            <img src={hit.featured_media_url} alt={hit.title} />
+        </article>
+    );
+}
 
 export default YutoInstantSearch;

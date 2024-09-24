@@ -8,7 +8,7 @@ import { addQueryArgs } from '@wordpress/url';
 import {
     meilisearchAutocompleteClient,
 } from '@meilisearch/autocomplete-client'
-import { settings } from '@wordpress/icons';
+import { defaultHooks } from '@wordpress/hooks';
 
 const useSettings = () => {
     const [hostURL, setHostURL] = useState('');
@@ -147,10 +147,10 @@ const useSettings = () => {
 
     const updateUIDs = (restBase, UID, action = 'add') => {
         console.log(`Performing ${action} on UIDs`);
-    
+
         setUIDs((prevUIDs) => {
             const updatedUIDs = { ...prevUIDs };
-    
+
             if (action === 'delete') {
                 // Delete the key if the action is 'delete'
                 delete updatedUIDs[restBase];
@@ -158,7 +158,7 @@ const useSettings = () => {
                 // Update or add the key if the action is 'add'
                 updatedUIDs[restBase] = UID;
             }
-    
+
             // Perform the API request inside the callback to use the updated state
             apiFetch({
                 path: '/wp/v2/settings',
@@ -170,11 +170,11 @@ const useSettings = () => {
                     },
                 },
             });
-    
+
             return updatedUIDs;
         });
     };
-    
+
 
     const getFeaturedMediaURL = async (id) => {
         try {
@@ -211,12 +211,19 @@ const useSettings = () => {
                     // Get the featured media URL for each post
                     const featured_media_url = await getFeaturedMediaURL(post.featured_media);
 
-                    return {
+                    // Apply the filter to modify the post object before returning
+                    return defaultHooks.applyFilters('yuto_modify_documents_data', {
                         id: post.id,
                         title: post.title.rendered,
                         link: post.link,
                         featured_media_url: featured_media_url || '', // Default to an empty string if null
-                    };
+                    }, post, UID);
+                    // return {
+                    //     id: post.id,
+                    //     title: post.title.rendered,
+                    //     link: post.link,
+                    //     featured_media_url: featured_media_url || '', // Default to an empty string if null
+                    // };
                 })
             );
 
